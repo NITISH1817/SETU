@@ -1,0 +1,22 @@
+{
+  "name": "govconnect",
+  "version": "1.0.0",
+  "description": "GovConnect - Government Interoperability Portal & Middleware MVP",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "seed": "cd backend && npm run seed",
+    "build": "cd backend && npm run build && cd ../frontend && npm run build"
+  },
+  "keywords": [
+    "interoperability",
+    "government",
+    "middleware",
+    "revenue",
+    "welfare",
+    "xml-transformation",
+    "consent"
+  ],
+  "author": "GovConnect Solution Architecture Team",
+  "license": "MIT"
+}
