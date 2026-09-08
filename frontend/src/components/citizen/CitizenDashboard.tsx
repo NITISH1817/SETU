@@ -5,6 +5,7 @@ import { Application, Scheme, Consent } from '../../types';
 import { StatusBadge } from '../common/StatusBadge';
 import { MetricCard } from '../common/MetricCard';
 import { ApplySchemeModal } from './ApplySchemeModal';
+import { useTranslation } from 'react-i18next';
 import {
   FilePlus,
   ShieldCheck,
@@ -12,15 +13,14 @@ import {
   CheckCircle,
   AlertTriangle,
   ArrowRight,
-  TrendingUp,
   RefreshCw,
   Award,
-  DollarSign
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const CitizenDashboard: React.FC = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [applications, setApplications] = useState<Application[]>([]);
   const [schemes, setSchemes] = useState<Scheme[]>([]);
   const [consents, setConsents] = useState<Consent[]>([]);
@@ -58,7 +58,7 @@ export const CitizenDashboard: React.FC = () => {
       await api.post('/income/verify', { applicationId: appId, citizenId });
       await fetchData();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Verification failed. Ensure consent is granted.');
+      alert(err.response?.data?.message || t('dashboard.verifyFailed', 'Verification failed. Ensure consent is granted.'));
     } finally {
       setVerifyingAppId(null);
     }
@@ -69,42 +69,43 @@ export const CitizenDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Welcome Banner */}
-      <div className="p-6 rounded-2xl gov-gradient-header border border-blue-900/60 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="p-6 gc-accent-card flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <span className="text-xs uppercase font-extrabold tracking-widest text-blue-400 bg-blue-950/80 px-2.5 py-1 rounded border border-blue-800">
-            Citizen Dashboard
+          <span className="gc-badge gc-badge-info mb-2">
+            {t('dashboard.header', 'Citizen Dashboard')}
           </span>
-          <h2 className="text-2xl font-extrabold text-white mt-2">
-            Welcome back, {user?.name || 'Citizen'}
+          <h2 className="text-2xl font-extrabold" style={{ color: 'var(--text)' }}>
+            {t('dashboard.welcome', 'Welcome back')}, {user?.name || 'Citizen'}
           </h2>
-          <p className="text-xs text-slate-300 mt-1">
-            Welfare Citizen ID: <span className="font-mono font-bold text-blue-400">{citizenId}</span> • Registered Citizen Single Window
+          <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
+            {t('dashboard.welfareIdLabel', 'Welfare Citizen ID')}: <span className="font-mono font-bold" style={{ color: 'var(--text)' }}>{citizenId}</span> • {t('dashboard.singleWindow', 'Registered Citizen Single Window')}
           </p>
         </div>
 
         <button
           onClick={() => setIsApplyModalOpen(true)}
-          className="flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg pulse-glow transition-all"
+          className="gc-btn-primary"
         >
           <FilePlus className="w-4 h-4" />
-          <span>Apply for New Scheme</span>
+          <span>{t('dashboard.applyScheme', 'Apply for New Scheme')}</span>
         </button>
       </div>
 
       {/* Consent Warning Alert */}
       {!hasActiveConsent && (
-        <div className="p-4 rounded-xl bg-amber-950/60 border border-amber-800/60 text-amber-300 flex items-center justify-between">
+        <div className="gc-alert gc-alert-warning flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0" />
+            <AlertTriangle className="w-5 h-5 flex-shrink-0" />
             <div className="text-xs">
-              <span className="font-bold">Digital Consent Required:</span> You do not currently have an active consent record for Revenue Department income verification.
+              <span className="font-bold">{t('dashboard.consentReq', 'Digital Consent Required')}:</span> {t('dashboard.consentDesc', 'You do not currently have an active consent record for Revenue Department income verification.')}
             </div>
           </div>
           <Link
             to="/consent"
-            className="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-lg shadow transition-colors flex-shrink-0"
+            className="px-3 py-1.5 font-bold text-xs rounded-lg shadow transition-colors flex-shrink-0"
+            style={{ background: 'var(--warning)', color: 'var(--bg)' }}
           >
-            Grant Consent Now
+            {t('dashboard.grantConsent', 'Grant Consent Now')}
           </Link>
         </div>
       )}
@@ -112,64 +113,60 @@ export const CitizenDashboard: React.FC = () => {
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
-          title="Submitted Applications"
+          title={t('dashboard.submittedApps', 'Submitted Applications')}
           value={applications.length}
-          subtitle="Total scheme applications"
+          subtitle={t('dashboard.totalApps', 'Total scheme applications')}
           icon={FilePlus}
-          variant="blue"
         />
         <MetricCard
-          title="Verified Incomes"
+          title={t('dashboard.verifiedIncomes', 'Verified Incomes')}
           value={applications.filter(a => a.incomeVerification?.verified).length}
-          subtitle="Verified by Revenue Dept"
+          subtitle={t('dashboard.verifiedByRev', 'Verified by Revenue Dept')}
           icon={CheckCircle}
-          variant="emerald"
         />
         <MetricCard
-          title="Eligible Schemes"
+          title={t('dashboard.eligibleSchemes', 'Eligible Schemes')}
           value={applications.filter(a => a.status === 'ELIGIBLE' || a.status === 'APPROVED').length}
-          subtitle="Qualified for benefit payout"
+          subtitle={t('dashboard.qualifiedBenefits', 'Qualified for benefit payout')}
           icon={Award}
-          variant="purple"
         />
         <MetricCard
-          title="Consent Status"
-          value={hasActiveConsent ? 'ACTIVE ✓' : 'NONE'}
-          subtitle={hasActiveConsent ? 'Revenue fetch authorized' : 'Action required'}
+          title={t('dashboard.consentStatus', 'Consent Status')}
+          value={hasActiveConsent ? t('dashboard.activeCheck', 'ACTIVE ✓') : t('dashboard.none', 'NONE')}
+          subtitle={hasActiveConsent ? t('dashboard.revFetchAuth', 'Revenue fetch authorized') : t('dashboard.actionReq', 'Action required')}
           icon={ShieldCheck}
-          variant={hasActiveConsent ? 'emerald' : 'amber'}
         />
       </div>
 
       {/* Available Welfare Schemes */}
       <div className="space-y-3">
-        <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">
-          Available Government Welfare Schemes
+        <h3 className="text-sm font-extrabold uppercase tracking-wider" style={{ color: 'var(--text)' }}>
+          {t('dashboard.availableSchemes', 'Available Government Welfare Schemes')}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {schemes.map((scheme) => (
-            <div key={scheme.schemeId} className="glass-card p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between">
+            <div key={scheme.schemeId} className="gc-card p-5 space-y-3 flex flex-col justify-between">
               <div>
                 <div className="flex justify-between items-start">
-                  <span className="text-[10px] font-bold uppercase tracking-wider bg-blue-950 text-blue-300 px-2 py-0.5 rounded border border-blue-800">
+                  <span className="gc-badge gc-badge-primary">
                     {scheme.category}
                   </span>
-                  <span className="text-xs font-mono font-bold text-slate-400">{scheme.schemeId}</span>
+                  <span className="text-xs font-mono font-bold" style={{ color: 'var(--text-dim)' }}>{scheme.schemeId}</span>
                 </div>
-                <h4 className="text-base font-bold text-white mt-2">{scheme.title}</h4>
-                <p className="text-xs text-slate-400 mt-1 line-clamp-2">{scheme.description}</p>
+                <h4 className="text-base font-bold mt-2" style={{ color: 'var(--text)' }}>{scheme.title}</h4>
+                <p className="text-xs mt-1 line-clamp-2" style={{ color: 'var(--text-muted)' }}>{scheme.description}</p>
               </div>
 
-              <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between">
+              <div className="pt-3 flex items-center justify-between" style={{ borderTop: '1px solid var(--border)' }}>
                 <div>
-                  <div className="text-[11px] text-slate-400">Max Income Limit: <span className="font-bold text-white">₹{scheme.maxIncomeThreshold.toLocaleString('en-IN')}</span></div>
-                  <div className="text-[11px] text-slate-400">Financial Benefit: <span className="font-bold text-emerald-400">₹{scheme.benefitsAmount.toLocaleString('en-IN')}</span></div>
+                  <div className="text-[11px]" style={{ color: 'var(--text-muted)' }}>{t('dashboard.maxIncome', 'Max Income Limit')}: <span className="font-bold" style={{ color: 'var(--text)' }}>₹{scheme.maxIncomeThreshold.toLocaleString('en-IN')}</span></div>
+                  <div className="text-[11px]" style={{ color: 'var(--text-muted)' }}>{t('dashboard.financialBenefit', 'Financial Benefit')}: <span className="font-bold" style={{ color: 'var(--text)' }}>₹{scheme.benefitsAmount.toLocaleString('en-IN')}</span></div>
                 </div>
                 <button
                   onClick={() => setIsApplyModalOpen(true)}
-                  className="px-3.5 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white font-bold text-xs border border-blue-500/30 transition-all flex items-center"
+                  className="gc-btn-secondary"
                 >
-                  Apply <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                  {t('dashboard.apply', 'Apply')} <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </button>
               </div>
             </div>
@@ -180,66 +177,68 @@ export const CitizenDashboard: React.FC = () => {
       {/* Applications List */}
       <div className="space-y-3">
         <div className="flex justify-between items-center">
-          <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">
-            My Applications & Status Tracking
+          <h3 className="text-sm font-extrabold uppercase tracking-wider" style={{ color: 'var(--text)' }}>
+            {t('dashboard.myApps', 'My Applications & Status Tracking')}
           </h3>
-          <Link to="/tracking" className="text-xs font-semibold text-blue-400 hover:underline">
-            View Detailed Tracking Timeline →
+          <Link to="/tracking" className="text-xs font-semibold hover:underline" style={{ color: 'var(--text)' }}>
+            {t('dashboard.viewTimeline', 'View Detailed Tracking Timeline')} →
           </Link>
         </div>
 
-        <div className="glass-panel rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
+        <div className="gc-surface overflow-hidden shadow-sm">
           {applications.length === 0 ? (
-            <div className="p-8 text-center text-slate-500 text-xs">
-              No applications submitted yet. Click "Apply for New Scheme" above.
+            <div className="p-8 text-center text-xs" style={{ color: 'var(--text-muted)' }}>
+              {t('dashboard.noApps', 'No applications submitted yet. Click "Apply for New Scheme" above.')}
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-slate-900 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
+              <table className="gc-table">
+                <thead>
                   <tr>
-                    <th className="p-4">App ID</th>
-                    <th className="p-4">Scheme</th>
-                    <th className="p-4">Current Department</th>
-                    <th className="p-4">Income Status</th>
-                    <th className="p-4">Application Status</th>
-                    <th className="p-4 text-right">Actions</th>
+                    <th>{t('dashboard.appId', 'App ID')}</th>
+                    <th>{t('dashboard.scheme', 'Scheme')}</th>
+                    <th>{t('dashboard.currentDept', 'Current Department')}</th>
+                    <th>{t('dashboard.incomeStatus', 'Income Status')}</th>
+                    <th>{t('dashboard.appStatus', 'Application Status')}</th>
+                    <th className="text-right">{t('dashboard.actions', 'Actions')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800 text-slate-300">
+                <tbody>
                   {applications.map((app) => (
-                    <tr key={app.applicationId} className="hover:bg-slate-900/50 transition-colors">
-                      <td className="p-4 font-mono font-bold text-blue-400">{app.applicationId}</td>
-                      <td className="p-4 font-semibold text-white">{app.schemeTitle}</td>
-                      <td className="p-4 text-slate-400">{app.currentDepartment}</td>
-                      <td className="p-4">
+                    <tr key={app.applicationId}>
+                      <td className="font-mono font-bold" style={{ color: 'var(--text)' }}>{app.applicationId}</td>
+                      <td className="font-semibold" style={{ color: 'var(--text)' }}>{app.schemeTitle}</td>
+                      <td>{app.currentDepartment}</td>
+                      <td>
                         {app.incomeVerification?.verified ? (
-                          <span className="text-emerald-400 font-semibold flex items-center">
-                            <CheckCircle className="w-3.5 h-3.5 mr-1" /> ₹{app.incomeVerification.annualIncome?.toLocaleString('en-IN')} Verified
+                          <span className="font-semibold flex items-center" style={{ color: 'var(--success)' }}>
+                            <CheckCircle className="w-3.5 h-3.5 mr-1" /> ₹{app.incomeVerification.annualIncome?.toLocaleString('en-IN')} {t('dashboard.verified', 'Verified')}
                           </span>
                         ) : (
-                          <span className="text-amber-400 font-semibold">Verification Pending</span>
+                          <span className="font-semibold" style={{ color: 'var(--warning)' }}>{t('dashboard.verifyPending', 'Verification Pending')}</span>
                         )}
                       </td>
-                      <td className="p-4">
+                      <td>
                         <StatusBadge status={app.status} />
                       </td>
-                      <td className="p-4 text-right">
+                      <td className="text-right">
                         {!app.incomeVerification?.verified ? (
                           <button
                             onClick={() => handleTriggerIncomeVerification(app.applicationId)}
                             disabled={verifyingAppId === app.applicationId}
-                            className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] rounded-lg transition-all shadow disabled:opacity-50 inline-flex items-center"
+                            className="px-3 py-1 font-bold text-[11px] rounded-lg transition-all shadow disabled:opacity-50 inline-flex items-center"
+                            style={{ background: 'var(--text)', color: 'var(--surface)' }}
                           >
                             {verifyingAppId === app.applicationId && <RefreshCw className="w-3 h-3 mr-1 animate-spin" />}
-                            Fetch & Verify Income
+                            {t('dashboard.fetchVerify', 'Fetch & Verify Income')}
                           </button>
                         ) : (
                           <Link
                             to="/interoperability-monitor"
-                            className="text-xs text-blue-400 hover:underline font-semibold"
+                            className="text-xs hover:underline font-semibold"
+                            style={{ color: 'var(--text)' }}
                           >
-                            View Interoperability Log
+                            {t('dashboard.viewLog', 'View Interoperability Log')}
                           </Link>
                         )}
                       </td>

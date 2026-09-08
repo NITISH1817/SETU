@@ -1,0 +1,180 @@
+{
+  "login": {
+    "title": "GovConnect Suite",
+    "subtitle": "Multi-Department Interoperability Gateway • Single Sign-On",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "password": "Password",
+    "createAccount": "Create Citizen Account",
+    "signInPortal": "Sign In to Portal",
+    "alreadyAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "signIn": "Sign In",
+    "registerNow": "Register Now",
+    "demoCreds": "⚡ Demo Hackathon Credentials",
+    "citizen": "Citizen",
+    "welfareOfficer": "Welfare Officer",
+    "admin": "Admin",
+    "authFailed": "Authentication failed"
+  },
+  "nav": {
+    "dashboard": "ഡാഷ്ബോർഡ്",
+    "applications": "അപേക്ഷകൾ",
+    "consent": "സമ്മത മാനേജർ",
+    "language": "ഭാഷ"
+  },
+  "sidebar": {
+    "citizenPortal": "പൗര പോർട്ടൽ",
+    "myDashboard": "എൻ്റെ ഡാഷ്ബോർഡ്",
+    "applyService": "സേവനത്തിനായി അപേക്ഷിക്കുക",
+    "consentManager": "സമ്മത മാനേജർ",
+    "trackApplications": "അപേക്ഷകൾ ട്രാക്ക് ചെയ്യുക",
+    "officerPortals": "ഉദ്യോഗസ്ഥ പോർട്ടലുകൾ",
+    "revenueDept": "റവന്യൂ വകുപ്പ്",
+    "welfareDept": "ക്ഷേമ വകുപ്പ്",
+    "interoperability": "പരസ്പര പ്രവർത്തനക്ഷമത",
+    "middlewareHub": "മിഡിൽവെയർ ഹബ്",
+    "consolidatedView": "ഏകീകൃത കാഴ്ച",
+    "mdmRegistry": "എംഡിഎം രജിസ്ട്രി",
+    "monitoring": "നിരീക്ഷണം",
+    "systemMonitor": "സിസ്റ്റം മോണിറ്റർ",
+    "adminPanel": "അഡ്മിൻ പാനൽ",
+    "apiDocs": "API പ്രമാണങ്ങൾ",
+    "logout": "ലോഗ് ഔട്ട്"
+  },
+  "monitor": {
+    "title": "Interoperability Pipeline Monitor",
+    "subtitle": "Live Hackathon Demonstration: Watch how our middleware bridges the independent Revenue XML system with the Social Welfare eligibility engine without replacing underlying legacy databases.",
+    "runPipeline": "Run Live Interoperability Flow",
+    "executing": "Executing Pipeline...",
+    "success": "Pipeline Execution Completed Successfully",
+    "latency": "Total Latency: {{time}} ms",
+    "inspectPayload": "Inspect Payload",
+    "payloadInspector": "Payload Inspector: {{name}}",
+    "clickToPopulate": "Click 'Run Live Interoperability Flow' above to populate live payloads for this step.",
+    "rawXmlTitle": "Revenue Department Raw Legacy XML Output",
+    "stepOutputTitle": "Step {{id}} Output Payload",
+    "idPrefix": "ID: "
+  },
+  "departments": {
+    "welfare": "Social Welfare",
+    "middleware": "Interoperability Middleware",
+    "revenue": "റവന്യൂ വകുപ്പ്"
+  },
+  "citizens": {
+    "cit1001": "Citizen: Ramesh (CIT-1001 → REV-7845)",
+    "cit1002": "Citizen: Anita (CIT-1002 → REV-9214)",
+    "cit1003": "Citizen: Suresh (CIT-1003 → REV-3312)"
+  },
+  "steps": {
+    "step1": {
+      "name": "1. Welfare Application Init",
+      "description": "Citizen submits scheme application with Welfare ID"
+    },
+    "step2": {
+      "name": "2. JWT & RBAC Auth Check",
+      "description": "Middleware validates JWT bearer token and role permissions"
+    },
+    "step3": {
+      "name": "3. Digital Consent Verification",
+      "description": "Middleware checks active unexpired consent record"
+    },
+    "step4": {
+      "name": "4. Master ID Mapping",
+      "description": "Maps Welfare ID (CIT-1001) to Revenue ID (REV-7845)"
+    },
+    "step5": {
+      "name": "5. Revenue API Execution",
+      "description": "Calls GET /api/revenue/citizen/REV-7845/income"
+    },
+    "step6": {
+      "name": "6. Legacy XML Received",
+      "description": "Revenue system returns raw XML format response"
+    },
+    "step7": {
+      "name": "7. XML → JSON Common Model",
+      "description": "Transforms legacy XML into standardized JSON payload"
+    },
+    "step8": {
+      "name": "8. Data Quality Validation",
+      "description": "Executes 6 schema & non-negative income quality checks"
+    },
+    "step9": {
+      "name": "9. Deterministic Rules Engine",
+      "description": "Evaluates scheme income and age thresholds"
+    },
+    "step10": {
+      "name": "10. Final Result & Audit Log",
+      "description": "Updates status, records immutable audit event, sends notification"
+    }
+  },
+  "topology": {
+    "title": "ക്രോസ്-ഡിപ്പാർട്ട്മെന്റൽ ഡാറ്റ നെറ്റ്‌വർക്ക്",
+    "welfareTitle": "ക്ഷേമ പോർട്ടൽ",
+    "welfareType": "JSON / REST",
+    "welfareDesc": "അപേക്ഷകൾ സമർപ്പിക്കുന്നു.",
+    "middlewareTitle": "GovConnect മിഡിൽവെയർ",
+    "middlewareType": "കോർ ഗേറ്റ്‌വേ",
+    "middlewareDesc": "സെക്യൂരിറ്റി കൈകാര്യം ചെയ്യുന്നു.",
+    "revenueTitle": "റവന്യൂ API",
+    "revenueType": "XML / REST",
+    "revenueDesc": "ഡാറ്റ നൽകുന്നു."
+  },
+  "hub": {
+    "title": "GovConnect മിഡിൽവെയർ ഹബ്",
+    "subtitle": "സെൻട്രൽ ഡാറ്റ എക്സ്ചേഞ്ച് നോഡ്",
+    "engineActive": "എഞ്ചിൻ സജീവം"
+  },
+  "dashboard": {
+    "header": "പൗര ഡാഷ്ബോർഡ്",
+    "welcome": "തിരികെ സ്വാഗതം",
+    "applyScheme": "പുതിയ പദ്ധതിക്കായി അപേക്ഷിക്കുക",
+    "consentReq": "ഡിജിറ്റൽ സമ്മതം ആവശ്യമാണ്",
+    "grantConsent": "ഇപ്പോൾ സമ്മതം നൽകുക",
+    "submittedApps": "സമർപ്പിച്ച അപേക്ഷകൾ",
+    "verifiedIncomes": "സ്ഥിരീകരിച്ച വരുമാനം",
+    "eligibleSchemes": "യോഗ്യമായ പദ്ധതികൾ",
+    "consentStatus": "സമ്മത നില",
+    "availableSchemes": "ലഭ്യമായ സർക്കാർ ക്ഷേമ പദ്ധതികൾ",
+    "apply": "അപേക്ഷിക്കുക",
+    "myApps": "എൻ്റെ അപേക്ഷകളും ട്രാക്കിംഗും",
+    "viewTimeline": "വിശദമായ ട്രാക്കിംഗ് സമയരേഖ കാണുക"
+  },
+  "revenue": {
+    "title": "റവന്യൂ ഡിപ്പാർട്ട്മെന്റ് പോർട്ടൽ (പഴയ സിസ്റ്റം)",
+    "subtitle": "ഔദ്യോഗിക ഭൂമി & നികുതി റവന്യൂ ഡയറക്ടറേറ്റ് • സ്വതന്ത്ര പഴയ XML ഡാറ്റാബേസ്",
+    "gatewayActive": "XML ഗേറ്റ്‌വേ സജീവം",
+    "idFormat": "റവന്യൂ ഐഡി ഫോർമാറ്റ്",
+    "idSubtitle": "സ്വതന്ത്ര റവന്യൂ നെയിംസ്‌പേസ്",
+    "protocol": "പ്രതികരണ പ്രോട്ടോക്കോൾ",
+    "protocolSubtitle": "പഴയ ഡാറ്റ കൈമാറ്റം",
+    "health": "സേവന ആരോഗ്യം",
+    "healthSubtitle": "റവന്യൂ ഡിസ്പാച്ച് എഞ്ചിൻ"
+  },
+  "welfare": {
+    "title": "സാമൂഹിക ക്ഷേമ വകുപ്പ് പോർട്ടൽ",
+    "subtitle": "ഔദ്യോഗിക ഗുണഭോക്തൃ ഭരണം & ഡയറക്ട് ബെനഫിറ്റ് ട്രാൻസ്ഫർ (DBT) പോർട്ടൽ",
+    "addScheme": "പുതിയ ക്ഷേമ പദ്ധതി ചേർക്കുക",
+    "totalApps": "ആകെ അപേക്ഷകൾ",
+    "totalAppsSub": "ലഭിച്ചവ",
+    "verifiedIncomes": "സ്ഥിരീകരിച്ച വരുമാനം",
+    "verifiedIncomesSub": "മിഡിൽവെയർ XML പാർസർ വഴി",
+    "disbursed": "വിതരണം ചെയ്ത ആനുകൂല്യങ്ങൾ",
+    "disbursedSub": "DBT പൂർത്തിയായി"
+  },
+  "admin": {
+    "title": "സിസ്റ്റം അഡ്മിൻ & ഇന്റർഓപ്പറബിലിറ്റി മോണിറ്ററിംഗ്",
+    "subtitle": "API ഗേറ്റ്‌വേ, ഓഡിറ്റ് ലോഗുകൾ എന്നിവയുടെ തത്സമയ നിരീക്ഷണം.",
+    "tabMetrics": "സിസ്റ്റം മെട്രിക്സ്",
+    "tabAudits": "ഓഡിറ്റ് ലോഗുകൾ",
+    "tabRules": "റൂൾസ് എഞ്ചിൻ",
+    "metricApps": "ആകെ അപേക്ഷകൾ",
+    "metricAppsSub": "പ്രോസസ്സ് ചെയ്തവ",
+    "metricVerified": "സ്ഥിരീകരിച്ചവ",
+    "metricVerifiedSub": "റവന്യൂ XML അംഗീകരിച്ചു",
+    "metricEligible": "യോഗ്യമായവ",
+    "metricEligibleSub": "നിയമങ്ങൾ പാസായി",
+    "metricTime": "ശരാശരി സമയം",
+    "metricTimeSub": "API ലേറ്റൻസി"
+  }
+}

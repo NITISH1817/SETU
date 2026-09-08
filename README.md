@@ -21,6 +21,7 @@ GovConnect is a comprehensive government interoperability framework, middleware 
 | **Data Quality Checks** | 6-point schema quality validator ensuring non-negative income & non-empty fields. | `dataValidator.ts`. |
 | **Exception Handling & Resilience** | Central error handler & automatic fallback to `mongodb-memory-server` for offline mode. | `errorHandler.ts`, `db.ts`. |
 | **Monitoring Dashboards** | Professional monitoring dashboard displaying API health, latency & rule configurators. | `AdminDashboard.tsx`, `MiddlewareHub.tsx`. |
+| **Monochrome UI & i18n** | Strict monochrome government aesthetic with full multilingual support (react-i18next). | `index.css` (variables), `i18n.ts`, Locales. |
 
 ---
 

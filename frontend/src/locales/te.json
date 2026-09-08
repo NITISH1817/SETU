@@ -1,0 +1,180 @@
+{
+  "login": {
+    "title": "GovConnect Suite",
+    "subtitle": "Multi-Department Interoperability Gateway • Single Sign-On",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "password": "Password",
+    "createAccount": "Create Citizen Account",
+    "signInPortal": "Sign In to Portal",
+    "alreadyAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "signIn": "Sign In",
+    "registerNow": "Register Now",
+    "demoCreds": "⚡ Demo Hackathon Credentials",
+    "citizen": "Citizen",
+    "welfareOfficer": "Welfare Officer",
+    "admin": "Admin",
+    "authFailed": "Authentication failed"
+  },
+  "nav": {
+    "dashboard": "డాష్‌బోర్డ్",
+    "applications": "దరఖాస్తులు",
+    "consent": "సమ్మతి నిర్వాహకుడు",
+    "language": "భాష"
+  },
+  "sidebar": {
+    "citizenPortal": "పౌర పోర్టల్",
+    "myDashboard": "నా డాష్‌బోర్డ్",
+    "applyService": "సేవ కోసం దరఖాస్తు చేయండి",
+    "consentManager": "సమ్మతి నిర్వాహకుడు",
+    "trackApplications": "దరఖాస్తులను ట్రాక్ చేయండి",
+    "officerPortals": "అధికారి పోర్టల్స్",
+    "revenueDept": "రెవెన్యూ శాఖ",
+    "welfareDept": "సంక్షేమ శాఖ",
+    "interoperability": "పరస్పర చర్య",
+    "middlewareHub": "మిడిల్‌వేర్ హబ్",
+    "consolidatedView": "సమీకృత వీక్షణ",
+    "mdmRegistry": "MDM రిజిస్ట్రీ",
+    "monitoring": "పర్యవేక్షణ",
+    "systemMonitor": "సిస్టమ్ మానిటర్",
+    "adminPanel": "అడ్మిన్ ప్యానెల్",
+    "apiDocs": "API డాక్స్",
+    "logout": "లాగ్ అవుట్"
+  },
+  "monitor": {
+    "title": "Interoperability Pipeline Monitor",
+    "subtitle": "Live Hackathon Demonstration: Watch how our middleware bridges the independent Revenue XML system with the Social Welfare eligibility engine without replacing underlying legacy databases.",
+    "runPipeline": "Run Live Interoperability Flow",
+    "executing": "Executing Pipeline...",
+    "success": "Pipeline Execution Completed Successfully",
+    "latency": "Total Latency: {{time}} ms",
+    "inspectPayload": "Inspect Payload",
+    "payloadInspector": "Payload Inspector: {{name}}",
+    "clickToPopulate": "Click 'Run Live Interoperability Flow' above to populate live payloads for this step.",
+    "rawXmlTitle": "Revenue Department Raw Legacy XML Output",
+    "stepOutputTitle": "Step {{id}} Output Payload",
+    "idPrefix": "ID: "
+  },
+  "departments": {
+    "welfare": "Social Welfare",
+    "middleware": "Interoperability Middleware",
+    "revenue": "రెవెన్యూ శాఖ"
+  },
+  "citizens": {
+    "cit1001": "Citizen: Ramesh (CIT-1001 → REV-7845)",
+    "cit1002": "Citizen: Anita (CIT-1002 → REV-9214)",
+    "cit1003": "Citizen: Suresh (CIT-1003 → REV-3312)"
+  },
+  "steps": {
+    "step1": {
+      "name": "1. Welfare Application Init",
+      "description": "Citizen submits scheme application with Welfare ID"
+    },
+    "step2": {
+      "name": "2. JWT & RBAC Auth Check",
+      "description": "Middleware validates JWT bearer token and role permissions"
+    },
+    "step3": {
+      "name": "3. Digital Consent Verification",
+      "description": "Middleware checks active unexpired consent record"
+    },
+    "step4": {
+      "name": "4. Master ID Mapping",
+      "description": "Maps Welfare ID (CIT-1001) to Revenue ID (REV-7845)"
+    },
+    "step5": {
+      "name": "5. Revenue API Execution",
+      "description": "Calls GET /api/revenue/citizen/REV-7845/income"
+    },
+    "step6": {
+      "name": "6. Legacy XML Received",
+      "description": "Revenue system returns raw XML format response"
+    },
+    "step7": {
+      "name": "7. XML → JSON Common Model",
+      "description": "Transforms legacy XML into standardized JSON payload"
+    },
+    "step8": {
+      "name": "8. Data Quality Validation",
+      "description": "Executes 6 schema & non-negative income quality checks"
+    },
+    "step9": {
+      "name": "9. Deterministic Rules Engine",
+      "description": "Evaluates scheme income and age thresholds"
+    },
+    "step10": {
+      "name": "10. Final Result & Audit Log",
+      "description": "Updates status, records immutable audit event, sends notification"
+    }
+  },
+  "topology": {
+    "title": "క్రాస్-డిపార్ట్‌మెంటల్ డేటా ఎక్స్ఛేంజ్ నెట్‌వర్క్",
+    "welfareTitle": "సంక్షేమ శాఖ పోర్టల్",
+    "welfareType": "JSON / REST",
+    "welfareDesc": "పథకం అభ్యర్థనలను సమర్పిస్తుంది.",
+    "middlewareTitle": "GovConnect మిడిల్‌వేర్",
+    "middlewareType": "కోర్ గేట్‌వే",
+    "middlewareDesc": "JWT మరియు డేటా క్వాలిటీని నిర్వహిస్తుంది.",
+    "revenueTitle": "రెవెన్యూ API",
+    "revenueType": "XML / REST",
+    "revenueDesc": "ఆదాయ రికార్డులను ప్రశ్నిస్తుంది."
+  },
+  "hub": {
+    "title": "GovConnect మిడిల్‌వేర్ హబ్",
+    "subtitle": "సెంట్రల్ డేటా ఎక్స్ఛేంజ్ నోడ్",
+    "engineActive": "ఇంజిన్ యాక్టివ్"
+  },
+  "dashboard": {
+    "header": "పౌర డాష్‌బోర్డ్",
+    "welcome": "తిరిగి స్వాగతం",
+    "applyScheme": "కొత్త పథకం కోసం దరఖాస్తు చేయండి",
+    "consentReq": "డిజిటల్ సమ్మతి అవసరం",
+    "grantConsent": "ఇప్పుడే సమ్మతిని మంజూరు చేయండి",
+    "submittedApps": "సమర్పించిన దరఖాస్తులు",
+    "verifiedIncomes": "ధృవీకరించిన ఆదాయాలు",
+    "eligibleSchemes": "అర్హత ఉన్న పథకాలు",
+    "consentStatus": "సమ్మతి స్థితి",
+    "availableSchemes": "అందుబాటులో ఉన్న ప్రభుత్వ సంక్షేమ పథకాలు",
+    "apply": "దరఖాస్తు చేయండి",
+    "myApps": "నా దరఖాస్తులు & స్థితి ట్రాకింగ్",
+    "viewTimeline": "వివరణాత్మక ట్రాకింగ్ కాలక్రమాన్ని చూడండి"
+  },
+  "revenue": {
+    "title": "రెవెన్యూ డిపార్ట్‌మెంట్ పోర్టల్ (వారసత్వ వ్యవస్థ)",
+    "subtitle": "అధికారిక భూమి & పన్ను రాబడి డైరెక్టరేట్ • స్వతంత్ర వారసత్వ XML డేటాబేస్",
+    "gatewayActive": "XML గేట్‌వే యాక్టివ్",
+    "idFormat": "రెవెన్యూ ID ఫార్మాట్",
+    "idSubtitle": "స్వతంత్ర రెవెన్యూ నేమ్‌స్పేస్",
+    "protocol": "ప్రతిస్పందన ప్రోటోకాల్",
+    "protocolSubtitle": "వారసత్వ డేటా మార్పిడి",
+    "health": "సేవా ఆరోగ్యం",
+    "healthSubtitle": "రెవెన్యూ డిస్పాచ్ ఇంజిన్"
+  },
+  "welfare": {
+    "title": "సాంఘిక సంక్షేమ శాఖ పోర్టల్",
+    "subtitle": "అధికారిక లబ్ధిదారుల పరిపాలన & ప్రత్యక్ష ప్రయోజన బదిలీ (DBT) పోర్టల్",
+    "addScheme": "కొత్త సంక్షేమ పథకాన్ని జోడించండి",
+    "totalApps": "మొత్తం దరఖాస్తులు",
+    "totalAppsSub": "పథకాల్లో స్వీకరించబడింది",
+    "verifiedIncomes": "ధృవీకరించబడిన ఆదాయాలు",
+    "verifiedIncomesSub": "మిడిల్‌వేర్ XML పార్సర్ ద్వారా",
+    "disbursed": "పంపిణీ చేసిన ప్రయోజనాలు",
+    "disbursedSub": "ప్రత్యక్ష ప్రయోజన బదిలీ పూర్తయింది"
+  },
+  "admin": {
+    "title": "సిస్టమ్ అడ్మిన్ & ఇంటర్‌ఆపరేబిలిటీ మానిటరింగ్",
+    "subtitle": "API గేట్‌వే జాప్యం, క్రాస్-డిపార్ట్‌మెంట్ ఆడిట్ ట్రెయిల్స్ మరియు నిబంధనల నిజ-సమయ పర్యవేక్షణ.",
+    "tabMetrics": "సిస్టమ్ మెట్రిక్స్",
+    "tabAudits": "ఆడిట్ లాగ్‌లు",
+    "tabRules": "నియమాల ఇంజిన్",
+    "metricApps": "మొత్తం దరఖాస్తులు",
+    "metricAppsSub": "మిడిల్‌వేర్ ద్వారా ప్రాసెస్ చేయబడింది",
+    "metricVerified": "ధృవీకరించిన దరఖాస్తులు",
+    "metricVerifiedSub": "రెవెన్యూ XML ధృవీకరించబడింది",
+    "metricEligible": "అర్హత ఉన్న దరఖాస్తులు",
+    "metricEligibleSub": "నిబంధనలు ఆమోదించబడ్డాయి",
+    "metricTime": "సగటు ప్రాసెసింగ్ సమయం",
+    "metricTimeSub": "API పైప్‌లైన్ జాప్యం"
+  }
+}

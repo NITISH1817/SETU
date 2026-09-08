@@ -1,0 +1,180 @@
+{
+  "login": {
+    "title": "GovConnect Suite",
+    "subtitle": "Multi-Department Interoperability Gateway • Single Sign-On",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "password": "Password",
+    "createAccount": "Create Citizen Account",
+    "signInPortal": "Sign In to Portal",
+    "alreadyAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "signIn": "Sign In",
+    "registerNow": "Register Now",
+    "demoCreds": "⚡ Demo Hackathon Credentials",
+    "citizen": "Citizen",
+    "welfareOfficer": "Welfare Officer",
+    "admin": "Admin",
+    "authFailed": "Authentication failed"
+  },
+  "nav": {
+    "dashboard": "डैशबोर्ड",
+    "applications": "आवेदन",
+    "consent": "सहमति प्रबंधक",
+    "language": "भाषा"
+  },
+  "sidebar": {
+    "citizenPortal": "नागरिक पोर्टल",
+    "myDashboard": "मेरा डैशबोर्ड",
+    "applyService": "सेवा के लिए आवेदन करें",
+    "consentManager": "सहमति प्रबंधक",
+    "trackApplications": "आवेदन ट्रैक करें",
+    "officerPortals": "अधिकारी पोर्टल",
+    "revenueDept": "राजस्व विभाग",
+    "welfareDept": "कल्याण विभाग",
+    "interoperability": "पारस्परिकता",
+    "middlewareHub": "मिडलवेयर हब",
+    "consolidatedView": "समेकित दृश्य",
+    "mdmRegistry": "एमडीएम रजिस्ट्री",
+    "monitoring": "निगरानी",
+    "systemMonitor": "सिस्टम मॉनिटर",
+    "adminPanel": "एडमिन पैनल",
+    "apiDocs": "एपीआई दस्तावेज़",
+    "logout": "लॉग आउट"
+  },
+  "monitor": {
+    "title": "Interoperability Pipeline Monitor",
+    "subtitle": "Live Hackathon Demonstration: Watch how our middleware bridges the independent Revenue XML system with the Social Welfare eligibility engine without replacing underlying legacy databases.",
+    "runPipeline": "Run Live Interoperability Flow",
+    "executing": "Executing Pipeline...",
+    "success": "Pipeline Execution Completed Successfully",
+    "latency": "Total Latency: {{time}} ms",
+    "inspectPayload": "Inspect Payload",
+    "payloadInspector": "Payload Inspector: {{name}}",
+    "clickToPopulate": "Click 'Run Live Interoperability Flow' above to populate live payloads for this step.",
+    "rawXmlTitle": "Revenue Department Raw Legacy XML Output",
+    "stepOutputTitle": "Step {{id}} Output Payload",
+    "idPrefix": "ID: "
+  },
+  "departments": {
+    "welfare": "Social Welfare",
+    "middleware": "Interoperability Middleware",
+    "revenue": "राजस्व विभाग"
+  },
+  "citizens": {
+    "cit1001": "Citizen: Ramesh (CIT-1001 → REV-7845)",
+    "cit1002": "Citizen: Anita (CIT-1002 → REV-9214)",
+    "cit1003": "Citizen: Suresh (CIT-1003 → REV-3312)"
+  },
+  "steps": {
+    "step1": {
+      "name": "1. Welfare Application Init",
+      "description": "Citizen submits scheme application with Welfare ID"
+    },
+    "step2": {
+      "name": "2. JWT & RBAC Auth Check",
+      "description": "Middleware validates JWT bearer token and role permissions"
+    },
+    "step3": {
+      "name": "3. Digital Consent Verification",
+      "description": "Middleware checks active unexpired consent record"
+    },
+    "step4": {
+      "name": "4. Master ID Mapping",
+      "description": "Maps Welfare ID (CIT-1001) to Revenue ID (REV-7845)"
+    },
+    "step5": {
+      "name": "5. Revenue API Execution",
+      "description": "Calls GET /api/revenue/citizen/REV-7845/income"
+    },
+    "step6": {
+      "name": "6. Legacy XML Received",
+      "description": "Revenue system returns raw XML format response"
+    },
+    "step7": {
+      "name": "7. XML → JSON Common Model",
+      "description": "Transforms legacy XML into standardized JSON payload"
+    },
+    "step8": {
+      "name": "8. Data Quality Validation",
+      "description": "Executes 6 schema & non-negative income quality checks"
+    },
+    "step9": {
+      "name": "9. Deterministic Rules Engine",
+      "description": "Evaluates scheme income and age thresholds"
+    },
+    "step10": {
+      "name": "10. Final Result & Audit Log",
+      "description": "Updates status, records immutable audit event, sends notification"
+    }
+  },
+  "topology": {
+    "title": "क्रॉस-डिपार्टमेंटल डेटा एक्सचेंज नेटवर्क टोपोलॉजी",
+    "welfareTitle": "कल्याण विभाग पोर्टल",
+    "welfareType": "JSON / REST",
+    "welfareDesc": "कल्याण आईडी (CIT-1001) का उपयोग करके योजना अनुरोध सबमिट करता है।",
+    "middlewareTitle": "GovConnect मिडलवेयर",
+    "middlewareType": "कोर गेटवे",
+    "middlewareDesc": "JWT ऑथ, आईडी रिज़ॉल्यूशन और डेटा क्वालिटी को संभालता है।",
+    "revenueTitle": "राजस्व विभाग API",
+    "revenueType": "XML / REST",
+    "revenueDesc": "राजस्व आईडी का उपयोग करके भूमि और आय रिकॉर्ड क्वेरी करता है।"
+  },
+  "hub": {
+    "title": "GovConnect मिडलवेयर हब",
+    "subtitle": "केंद्रीय डेटा एक्सचेंज नोड",
+    "engineActive": "सिंटैक्टिक इंजन सक्रिय"
+  },
+  "dashboard": {
+    "header": "नागरिक डैशबोर्ड",
+    "welcome": "वापसी पर स्वागत है",
+    "applyScheme": "नई योजना के लिए आवेदन करें",
+    "consentReq": "डिजिटल सहमति आवश्यक",
+    "grantConsent": "अभी सहमति दें",
+    "submittedApps": "जमा किए गए आवेदन",
+    "verifiedIncomes": "सत्यापित आय",
+    "eligibleSchemes": "पात्र योजनाएं",
+    "consentStatus": "सहमति की स्थिति",
+    "availableSchemes": "उपलब्ध सरकारी कल्याण योजनाएं",
+    "apply": "आवेदन करें",
+    "myApps": "मेरे आवेदन और स्थिति ट्रैकिंग",
+    "viewTimeline": "विस्तृत ट्रैकिंग टाइमलाइन देखें"
+  },
+  "revenue": {
+    "title": "राजस्व विभाग पोर्टल (विरासत प्रणाली)",
+    "subtitle": "आधिकारिक भूमि और कर राजस्व निदेशालय • स्वतंत्र विरासत XML डेटाबेस",
+    "gatewayActive": "XML गेटवे सक्रिय",
+    "idFormat": "राजस्व आईडी प्रारूप",
+    "idSubtitle": "स्वतंत्र राजस्व नेमस्पेस",
+    "protocol": "प्रतिक्रिया प्रोटोकॉल",
+    "protocolSubtitle": "विरासत डेटा विनिमय",
+    "health": "सेवा स्वास्थ्य",
+    "healthSubtitle": "राजस्व प्रेषण इंजन"
+  },
+  "welfare": {
+    "title": "समाज कल्याण विभाग पोर्टल",
+    "subtitle": "आधिकारिक लाभार्थी प्रशासन और प्रत्यक्ष लाभ हस्तांतरण (DBT) पोर्टल",
+    "addScheme": "नई कल्याण योजना जोड़ें",
+    "totalApps": "कुल आवेदन",
+    "totalAppsSub": "योजनाओं में प्राप्त",
+    "verifiedIncomes": "सत्यापित आय",
+    "verifiedIncomesSub": "मिडलवेयर XML पार्सर के माध्यम से",
+    "disbursed": "वितरित लाभ",
+    "disbursedSub": "प्रत्यक्ष लाभ हस्तांतरण पूर्ण"
+  },
+  "admin": {
+    "title": "सिस्टम एडमिन और पारस्परिकता निगरानी",
+    "subtitle": "API गेटवे विलंबता, क्रॉस-विभाग ऑडिट ट्रेल्स और पात्रता नियमों की वास्तविक समय की निगरानी।",
+    "tabMetrics": "सिस्टम मेट्रिक्स",
+    "tabAudits": "ऑडिट लॉग",
+    "tabRules": "नियम इंजन",
+    "metricApps": "कुल आवेदन",
+    "metricAppsSub": "मिडलवेयर द्वारा संसाधित",
+    "metricVerified": "सत्यापित आवेदन",
+    "metricVerifiedSub": "राजस्व XML पार्स और मान्य",
+    "metricEligible": "पात्र आवेदन",
+    "metricEligibleSub": "पात्रता नियम पारित",
+    "metricTime": "औसत प्रसंस्करण समय",
+    "metricTimeSub": "एंड-टू-एंड API पाइपलाइन विलंबता"
+  }
+}

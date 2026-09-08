@@ -1,14 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { NavLink } from 'react-router-dom';
-import { Shield, Bell, LogOut, RefreshCw, Building2, UserCheck, Layers, Settings, User } from 'lucide-react';
+import { NavLink, Link } from 'react-router-dom';
+import {
+  Shield, Bell, LogOut, RefreshCw, Building2, UserCheck,
+  Layers, Settings, User, Globe, ChevronDown, Menu, X,
+  LayoutDashboard, Briefcase, MessageSquare, Clock,
+  Sun, Moon
+} from 'lucide-react';
 import api from '../../services/api';
 import { NotificationItem } from '../../types';
+import { useTranslation } from 'react-i18next';
+
+// ── Theme Hook ────────────────────────────────────────────────────────────────
+function useTheme() {
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const stored = localStorage.getItem('govconnect_theme') as 'light' | 'dark' | null;
+    return stored || 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('govconnect_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light');
+  return { theme, toggleTheme };
+}
 
 export const Navbar: React.FC<{ onOpenNotifications?: () => void }> = ({ onOpenNotifications }) => {
   const { user, logout, quickSwitchRole } = useAuth();
+  const { t, i18n } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
   const [unreadCount, setUnreadCount] = useState(0);
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const roleRef = useRef<HTMLDivElement>(null);
+  const langRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (user && user.role === 'CITIZEN') {
@@ -21,159 +49,295 @@ export const Navbar: React.FC<{ onOpenNotifications?: () => void }> = ({ onOpenN
     }
   }, [user]);
 
+  // Close dropdowns on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (roleRef.current && !roleRef.current.contains(e.target as Node)) setRoleDropdownOpen(false);
+      if (langRef.current && !langRef.current.contains(e.target as Node)) setLangDropdownOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
   const handleRoleSelect = async (role: 'CITIZEN' | 'WELFARE_OFFICER' | 'REVENUE_OFFICER' | 'ADMIN', citizenId?: string) => {
     setRoleDropdownOpen(false);
     await quickSwitchRole(role, citizenId);
   };
 
-  const navTabClass = ({ isActive }: { isActive: boolean }) =>
-    `px-3 py-1.5 rounded-lg font-bold text-xs flex items-center space-x-1.5 transition-all ${
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+    setLangDropdownOpen(false);
+  };
+
+  const navLinks = [
+    { to: '/dashboard',            label: t('navbar.unifiedGateway', 'Home'),             icon: LayoutDashboard },
+    { to: '/services/citizen',     label: t('navbar.citizenServices', 'Citizen Services'), icon: UserCheck },
+    { to: '/services/business',    label: t('navbar.business', 'Business'),                icon: Briefcase },
+    { to: '/tracking',             label: 'Applications',                                  icon: Clock },
+    { to: '/middleware-hub',       label: t('navbar.middleware', 'Middleware'),             icon: Layers },
+    { to: '/admin',                label: t('sidebar.adminPanel', 'Admin'),                icon: Settings },
+  ];
+
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-150 ${
       isActive
-        ? 'bg-blue-600 text-white shadow-md'
-        : 'text-slate-300 hover:text-white hover:bg-slate-800'
+        ? 'font-semibold'
+        : ''
     }`;
 
+  const navLinkStyle = (isActive: boolean): React.CSSProperties => isActive
+    ? { color: 'var(--text)', background: 'var(--surface-3)', border: '1px solid var(--border-2)' }
+    : { color: 'var(--text-muted)', background: 'transparent', border: '1px solid transparent' };
+
+  const dropdownBase =
+    'absolute right-0 top-full mt-2 gc-glass rounded-xl border border-[var(--border)] shadow-[var(--shadow-lg)] py-1 z-50 overflow-hidden';
+
   return (
-    <header className="gov-gradient-header border-b border-slate-800 sticky top-0 z-40 px-6 py-2.5 shadow-md flex flex-col md:flex-row items-center justify-between gap-3">
-      {/* Brand & Department Switcher Tabs */}
-      <div className="flex flex-wrap items-center space-x-4">
-        <div className="flex items-center space-x-2.5">
-          <div className="w-9 h-9 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 font-bold shadow-inner">
-            <Shield className="w-5 h-5 text-blue-400" />
-          </div>
-          <div>
-            <div className="flex items-center space-x-1.5">
-              <h1 className="text-base font-extrabold tracking-tight text-white">GovConnect</h1>
-              <span className="text-[9px] uppercase font-bold tracking-widest bg-blue-900/60 text-blue-300 px-1.5 py-0.5 rounded border border-blue-700/50">
-                MVP
+    <>
+      {/* Thin top border */}
+      <div className="h-px" style={{ background: 'var(--border-2)' }} />
+
+      <header className="gc-navbar sticky top-0 z-40" style={{ borderRadius: 0 }}>
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+
+          {/* Brand */}
+          <Link to="/dashboard" className="flex items-center gap-2.5 shrink-0">
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm"
+              style={{ background: 'var(--text)' }}
+            >
+              <Shield className="" style={{ width: 17, height: 17, color: 'var(--surface)' }} />
+            </div>
+            <div className="hidden sm:block">
+              <span className="text-sm font-bold tracking-tight" style={{ color: 'var(--text)' }}>
+                GovConnect
+              </span>
+              <span
+                className="ml-2 text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded"
+                style={{
+                  color: 'var(--text-muted)',
+                  background: 'var(--surface-3)',
+                  border: '1px solid var(--border-2)'
+                }}
+              >
+                SIH 2026
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 hidden lg:block">
-              Multi-Department Interoperability Suite
-            </p>
-          </div>
-        </div>
+          </Link>
 
-        {/* Global Real-Time Department Switcher Tabs */}
-        <nav className="flex items-center space-x-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800">
-          <NavLink to="/dashboard" className={navTabClass}>
-            <User className="w-3.5 h-3.5" />
-            <span>Citizen Portal</span>
-          </NavLink>
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-0.5">
+            {navLinks.map(({ to, label, icon: Icon }) => (
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) => `flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-150 ${isActive ? 'font-semibold' : ''}`}
+                style={({ isActive }) => navLinkStyle(isActive)}
+              >
+                <Icon className="w-3.5 h-3.5" style={{ color: 'inherit' }} />
+                <span>{label}</span>
+              </NavLink>
+            ))}
+          </nav>
 
-          <NavLink to="/revenue-department" className={navTabClass}>
-            <Building2 className="w-3.5 h-3.5 text-amber-400" />
-            <span>Revenue Dept</span>
-          </NavLink>
+          {/* Right Controls */}
+          <div className="flex items-center gap-1.5">
 
-          <NavLink to="/welfare-department" className={navTabClass}>
-            <UserCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Social Welfare</span>
-          </NavLink>
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+              className="h-8 w-8 rounded-lg flex items-center justify-center transition-colors"
+              style={{ color: 'var(--text-muted)' }}
+              onMouseEnter={e => { (e.target as HTMLElement).closest('button')!.style.background = 'var(--surface-3)'; (e.target as HTMLElement).closest('button')!.style.color = 'var(--text)'; }}
+              onMouseLeave={e => { (e.target as HTMLElement).closest('button')!.style.background = 'transparent'; (e.target as HTMLElement).closest('button')!.style.color = 'var(--text-muted)'; }}
+            >
+              {theme === 'light'
+                ? <Moon className="w-4 h-4" />
+                : <Sun className="w-4 h-4" />
+              }
+            </button>
 
-          <NavLink to="/middleware-hub" className={navTabClass}>
-            <Layers className="w-3.5 h-3.5 text-purple-400" />
-            <span>Middleware Hub</span>
-          </NavLink>
+            {/* Language Switcher */}
+            <div className="relative" ref={langRef}>
+              <button
+                onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg text-xs font-medium transition-colors border border-transparent"
+                style={{ color: 'var(--text-muted)' }}
+              >
+                <Globe className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
+                <span className="hidden sm:inline uppercase font-bold" style={{ color: 'var(--text)' }}>
+                  {i18n.language.slice(0, 2)}
+                </span>
+                <ChevronDown className="w-3 h-3 opacity-60" />
+              </button>
 
-          <NavLink to="/admin" className={navTabClass}>
-            <Settings className="w-3.5 h-3.5 text-slate-400" />
-            <span>Admin</span>
-          </NavLink>
-        </nav>
-      </div>
+              {langDropdownOpen && (
+                <div className={`${dropdownBase} w-52`}>
+                  <div className="px-3 py-1.5 gc-section-label border-b border-[var(--border)] mb-1">Language / भाषा</div>
+                  {[
+                    { code: 'en', name: 'English' },
+                    { code: 'hi', name: 'हिंदी (Hindi)' },
+                    { code: 'mr', name: 'मराठी (Marathi)' },
+                    { code: 'ta', name: 'தமிழ் (Tamil)' },
+                    { code: 'te', name: 'తెలుగు (Telugu)' },
+                    { code: 'kn', name: 'ಕನ್ನಡ (Kannada)' },
+                    { code: 'ml', name: 'മലയാളം (Malayalam)' },
+                  ].map(lang => (
+                    <button
+                      key={lang.code}
+                      onClick={() => changeLanguage(lang.code)}
+                      className="w-full text-left px-3 py-2 text-xs transition-colors"
+                      style={{
+                        color: i18n.language === lang.code ? 'var(--primary)' : 'var(--text-muted)',
+                        fontWeight: i18n.language === lang.code ? '600' : '400',
+                        background: i18n.language === lang.code ? 'var(--indigo-bg)' : 'transparent'
+                      }}
+                      onMouseEnter={e => { if (i18n.language !== lang.code) (e.currentTarget as HTMLElement).style.background = 'var(--surface-3)'; }}
+                      onMouseLeave={e => { if (i18n.language !== lang.code) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                    >
+                      {lang.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
-      <div className="flex items-center space-x-3">
-        {/* Persona Quick Switcher Dropdown */}
-        <div className="relative">
-          <button
-            onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs px-2.5 py-1.5 rounded-lg border border-slate-700 transition-colors"
-          >
-            <RefreshCw className="w-3.5 h-3.5 text-blue-400" />
-            <span className="font-semibold text-slate-300 hidden sm:inline">Role:</span>
-            <span className="font-bold text-blue-400">{user?.role}</span>
-          </button>
+            {/* Role Switcher */}
+            <div className="relative" ref={roleRef}>
+              <button
+                onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
+                className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg text-xs font-medium transition-colors"
+                style={{ color: 'var(--text-muted)' }}
+              >
+                <RefreshCw className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
+                <span className="hidden sm:inline font-bold" style={{ color: 'var(--text)' }}>{user?.role}</span>
+                <ChevronDown className="w-3 h-3 opacity-60" />
+              </button>
 
-          {roleDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-64 glass-panel rounded-xl shadow-2xl border border-slate-700 py-2 z-50">
-              <div className="px-3 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800">
-                ⚡ Switch User Persona
+              {roleDropdownOpen && (
+                <div className={`${dropdownBase} w-72`}>
+                  <div className="px-3 py-1.5 gc-section-label border-b border-[var(--border)] mb-1">⚡ Switch User Persona</div>
+                  {[
+                    { role: 'CITIZEN' as const, citizenId: 'CIT-1001', name: 'Ramesh Kumar', desc: 'CIT-1001 · Eligible for Scholarship' },
+                    { role: 'CITIZEN' as const, citizenId: 'CIT-1002', name: 'Anita Sharma', desc: 'CIT-1002 · Senior Citizen Pension' },
+                    { role: 'CITIZEN' as const, citizenId: 'CIT-1003', name: 'Suresh Patel', desc: 'CIT-1003 · High Income' },
+                  ].map(({ role, citizenId, name, desc }) => (
+                    <button
+                      key={citizenId}
+                      onClick={() => handleRoleSelect(role, citizenId)}
+                      className="w-full text-left px-3 py-2 transition-colors"
+                      style={{ color: 'var(--text)' }}
+                      onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'var(--indigo-bg)'}
+                      onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
+                    >
+                      <div className="text-xs font-semibold">{name}</div>
+                      <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-dim)' }}>{desc}</div>
+                    </button>
+                  ))}
+                  <div className="gc-divider my-1" />
+                  {[
+                    { role: 'WELFARE_OFFICER' as const, label: 'Dr. Sunita Rao · Welfare Officer' },
+                    { role: 'REVENUE_OFFICER' as const, label: 'Rajesh Verma · Revenue Officer' },
+                    { role: 'ADMIN' as const, label: 'System Admin · NIC Monitor' },
+                  ].map(({ role, label }) => (
+                    <button
+                      key={role}
+                      onClick={() => handleRoleSelect(role)}
+                      className="w-full text-left px-3 py-2 text-xs font-medium transition-colors"
+                      style={{ color: 'var(--text-muted)' }}
+                      onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'var(--indigo-bg)'}
+                      onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Notifications */}
+            {user?.role === 'CITIZEN' && (
+              <button
+                onClick={onOpenNotifications}
+                className="relative h-8 w-8 rounded-lg flex items-center justify-center transition-colors"
+                style={{ color: 'var(--text-muted)' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--surface-3)'; (e.currentTarget as HTMLElement).style.color = 'var(--text)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'; }}
+              >
+                <Bell className="w-4 h-4" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 text-[9px] font-bold rounded-full flex items-center justify-center px-1"
+                    style={{ background: 'var(--text)', color: 'var(--surface)' }}>
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+            )}
+
+            {/* User + Logout */}
+            <div
+              className="flex items-center gap-2 pl-2 ml-1"
+              style={{ borderLeft: '1px solid var(--border)' }}
+            >
+              <div className="hidden md:block text-right">
+                <div className="text-xs font-semibold leading-tight" style={{ color: 'var(--text)' }}>{user?.name}</div>
+                <div className="text-[10px] font-mono" style={{ color: 'var(--text-dim)' }}>{user?.citizenId || user?.email}</div>
               </div>
               <button
-                onClick={() => handleRoleSelect('CITIZEN', 'CIT-1001')}
-                className="w-full text-left px-3 py-2 text-xs hover:bg-blue-900/40 text-slate-200 flex flex-col"
+                onClick={logout}
+                title="Sign out"
+                className="h-8 w-8 rounded-lg flex items-center justify-center transition-colors"
+                style={{ color: 'var(--text-muted)' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--surface-3)'; (e.currentTarget as HTMLElement).style.color = 'var(--text)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'; }}
               >
-                <span className="font-semibold text-white">Ramesh Kumar (Citizen)</span>
-                <span className="text-[11px] text-slate-400">CIT-1001 (Eligible for Scholarship)</span>
-              </button>
-              <button
-                onClick={() => handleRoleSelect('CITIZEN', 'CIT-1002')}
-                className="w-full text-left px-3 py-2 text-xs hover:bg-blue-900/40 text-slate-200 flex flex-col"
-              >
-                <span className="font-semibold text-white">Anita Sharma (Senior Citizen)</span>
-                <span className="text-[11px] text-slate-400">CIT-1002 (Eligible for Pension)</span>
-              </button>
-              <button
-                onClick={() => handleRoleSelect('CITIZEN', 'CIT-1003')}
-                className="w-full text-left px-3 py-2 text-xs hover:bg-blue-900/40 text-slate-200 flex flex-col"
-              >
-                <span className="font-semibold text-white">Suresh Patel (High Income)</span>
-                <span className="text-[11px] text-slate-400">CIT-1003 (Ineligible - High Income)</span>
-              </button>
-              <div className="border-t border-slate-800 my-1"></div>
-              <button
-                onClick={() => handleRoleSelect('WELFARE_OFFICER')}
-                className="w-full text-left px-3 py-2 text-xs hover:bg-blue-900/40 text-slate-200 font-semibold"
-              >
-                Dr. Sunita Rao (Welfare Officer)
-              </button>
-              <button
-                onClick={() => handleRoleSelect('REVENUE_OFFICER')}
-                className="w-full text-left px-3 py-2 text-xs hover:bg-blue-900/40 text-slate-200 font-semibold"
-              >
-                Rajesh Verma (Revenue Officer)
-              </button>
-              <button
-                onClick={() => handleRoleSelect('ADMIN')}
-                className="w-full text-left px-3 py-2 text-xs hover:bg-blue-900/40 text-slate-200 font-semibold"
-              >
-                System Admin (NIC Monitor)
+                <LogOut className="w-4 h-4" />
               </button>
             </div>
-          )}
-        </div>
 
-        {/* Notifications Icon */}
-        {user?.role === 'CITIZEN' && (
-          <button
-            onClick={onOpenNotifications}
-            className="relative p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors"
-          >
-            <Bell className="w-4 h-4" />
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[10px] font-extrabold rounded-full flex items-center justify-center animate-pulse">
-                {unreadCount}
-              </span>
-            )}
-          </button>
-        )}
-
-        {/* User Profile & Logout */}
-        <div className="flex items-center space-x-2 pl-2 border-l border-slate-800">
-          <div className="text-right hidden md:block">
-            <div className="text-xs font-bold text-slate-200">{user?.name}</div>
-            <div className="text-[10px] text-slate-400 font-mono">{user?.citizenId || user?.email}</div>
+            {/* Mobile menu toggle */}
+            <button
+              className="lg:hidden h-8 w-8 rounded-lg flex items-center justify-center transition-colors"
+              style={{ color: 'var(--text-muted)' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--surface-3)'; (e.currentTarget as HTMLElement).style.color = 'var(--text)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'; }}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
           </div>
-          <button
-            onClick={logout}
-            className="p-2 rounded-lg bg-rose-950/40 text-rose-300 hover:bg-rose-900/60 border border-rose-800/40 transition-colors"
-            title="Logout"
-          >
-            <LogOut className="w-4 h-4" />
-          </button>
         </div>
-      </div>
-    </header>
+
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div
+            className="lg:hidden px-4 py-3 space-y-1"
+            style={{ borderTop: '1px solid var(--border)' }}
+          >
+            {navLinks.map(({ to, label, icon: Icon }) => (
+              <NavLink
+                key={to}
+                to={to}
+                onClick={() => setMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    isActive ? 'font-semibold' : ''
+                  }`
+                }
+                style={({ isActive }) => ({
+                  color: isActive ? 'var(--text)' : 'var(--text-muted)',
+                  background: isActive ? 'var(--surface-3)' : 'transparent',
+                  border: isActive ? '1px solid var(--border-2)' : '1px solid transparent',
+                })}
+              >
+                <Icon className="w-4 h-4" />
+                {label}
+              </NavLink>
+            ))}
+          </div>
+        )}
+      </header>
+    </>
   );
 };

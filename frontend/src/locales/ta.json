@@ -1,0 +1,180 @@
+{
+  "login": {
+    "title": "GovConnect Suite",
+    "subtitle": "Multi-Department Interoperability Gateway • Single Sign-On",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "password": "Password",
+    "createAccount": "Create Citizen Account",
+    "signInPortal": "Sign In to Portal",
+    "alreadyAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "signIn": "Sign In",
+    "registerNow": "Register Now",
+    "demoCreds": "⚡ Demo Hackathon Credentials",
+    "citizen": "Citizen",
+    "welfareOfficer": "Welfare Officer",
+    "admin": "Admin",
+    "authFailed": "Authentication failed"
+  },
+  "nav": {
+    "dashboard": "முகப்பு",
+    "applications": "விண்ணப்பங்கள்",
+    "consent": "ஒப்புதல் மேலாளர்",
+    "language": "மொழி"
+  },
+  "sidebar": {
+    "citizenPortal": "குடிமக்கள் தளம்",
+    "myDashboard": "என் முகப்பு",
+    "applyService": "சேவைக்கு விண்ணப்பிக்கவும்",
+    "consentManager": "ஒப்புதல் மேலாளர்",
+    "trackApplications": "விண்ணப்பங்களை கண்காணிக்கவும்",
+    "officerPortals": "அதிகாரி தளங்கள்",
+    "revenueDept": "வருவாய் துறை",
+    "welfareDept": "நலன் துறை",
+    "interoperability": "இயங்குதன்மை",
+    "middlewareHub": "இடைநிலை மையம்",
+    "consolidatedView": "ஒருங்கிணைந்த காட்சி",
+    "mdmRegistry": "MDM பதிவேடு",
+    "monitoring": "கண்காணிப்பு",
+    "systemMonitor": "கணினி கண்காணிப்பு",
+    "adminPanel": "நிர்வாகி தளம்",
+    "apiDocs": "API ஆவணங்கள்",
+    "logout": "வெளியேறு"
+  },
+  "monitor": {
+    "title": "Interoperability Pipeline Monitor",
+    "subtitle": "Live Hackathon Demonstration: Watch how our middleware bridges the independent Revenue XML system with the Social Welfare eligibility engine without replacing underlying legacy databases.",
+    "runPipeline": "Run Live Interoperability Flow",
+    "executing": "Executing Pipeline...",
+    "success": "Pipeline Execution Completed Successfully",
+    "latency": "Total Latency: {{time}} ms",
+    "inspectPayload": "Inspect Payload",
+    "payloadInspector": "Payload Inspector: {{name}}",
+    "clickToPopulate": "Click 'Run Live Interoperability Flow' above to populate live payloads for this step.",
+    "rawXmlTitle": "Revenue Department Raw Legacy XML Output",
+    "stepOutputTitle": "Step {{id}} Output Payload",
+    "idPrefix": "ID: "
+  },
+  "departments": {
+    "welfare": "Social Welfare",
+    "middleware": "Interoperability Middleware",
+    "revenue": "வருவாய் துறை"
+  },
+  "citizens": {
+    "cit1001": "Citizen: Ramesh (CIT-1001 → REV-7845)",
+    "cit1002": "Citizen: Anita (CIT-1002 → REV-9214)",
+    "cit1003": "Citizen: Suresh (CIT-1003 → REV-3312)"
+  },
+  "steps": {
+    "step1": {
+      "name": "1. Welfare Application Init",
+      "description": "Citizen submits scheme application with Welfare ID"
+    },
+    "step2": {
+      "name": "2. JWT & RBAC Auth Check",
+      "description": "Middleware validates JWT bearer token and role permissions"
+    },
+    "step3": {
+      "name": "3. Digital Consent Verification",
+      "description": "Middleware checks active unexpired consent record"
+    },
+    "step4": {
+      "name": "4. Master ID Mapping",
+      "description": "Maps Welfare ID (CIT-1001) to Revenue ID (REV-7845)"
+    },
+    "step5": {
+      "name": "5. Revenue API Execution",
+      "description": "Calls GET /api/revenue/citizen/REV-7845/income"
+    },
+    "step6": {
+      "name": "6. Legacy XML Received",
+      "description": "Revenue system returns raw XML format response"
+    },
+    "step7": {
+      "name": "7. XML → JSON Common Model",
+      "description": "Transforms legacy XML into standardized JSON payload"
+    },
+    "step8": {
+      "name": "8. Data Quality Validation",
+      "description": "Executes 6 schema & non-negative income quality checks"
+    },
+    "step9": {
+      "name": "9. Deterministic Rules Engine",
+      "description": "Evaluates scheme income and age thresholds"
+    },
+    "step10": {
+      "name": "10. Final Result & Audit Log",
+      "description": "Updates status, records immutable audit event, sends notification"
+    }
+  },
+  "topology": {
+    "title": "துறைகளுக்கு இடையிலான தரவு பரிமாற்ற நெட்வொர்க்",
+    "welfareTitle": "நலத்துறை தளம்",
+    "welfareType": "JSON / REST",
+    "welfareDesc": "நலன் ஐடியைப் பயன்படுத்தி திட்டக் கோரிக்கைகளைச் சமர்ப்பிக்கிறது.",
+    "middlewareTitle": "GovConnect இடைநிலை",
+    "middlewareType": "முதன்மை நுழைவாயில்",
+    "middlewareDesc": "JWT அங்கீகாரம், ஐடித் தீர்வு மற்றும் தரக் கட்டுப்பாட்டைக் கையாள்கிறது.",
+    "revenueTitle": "வருவாய் துறை API",
+    "revenueType": "XML / REST",
+    "revenueDesc": "வருவாய் ஐடியைப் பயன்படுத்தி தரவைக் கோருகிறது."
+  },
+  "hub": {
+    "title": "GovConnect இடைநிலை மையம்",
+    "subtitle": "மத்திய தரவு பரிமாற்ற முனை",
+    "engineActive": "இயந்திரம் செயலில்"
+  },
+  "dashboard": {
+    "header": "குடிமக்கள் முகப்பு",
+    "welcome": "மீண்டும் வருக",
+    "applyScheme": "புதிய திட்டத்திற்கு விண்ணப்பிக்கவும்",
+    "consentReq": "டிஜிட்டல் ஒப்புதல் தேவை",
+    "grantConsent": "இப்போது ஒப்புதல் அளிக்கவும்",
+    "submittedApps": "சமர்ப்பிக்கப்பட்ட விண்ணப்பங்கள்",
+    "verifiedIncomes": "சரிபார்க்கப்பட்ட வருமானம்",
+    "eligibleSchemes": "தகுதியான திட்டங்கள்",
+    "consentStatus": "ஒப்புதல் நிலை",
+    "availableSchemes": "கிடைக்கும் அரசு நலத் திட்டங்கள்",
+    "apply": "விண்ணப்பிக்கவும்",
+    "myApps": "என் விண்ணப்பங்கள் மற்றும் நிலை கண்காணிப்பு",
+    "viewTimeline": "விரிவான கண்காணிப்பு காலவரிசையை காண்க"
+  },
+  "revenue": {
+    "title": "வருவாய் துறை தளம் (பழைய கணினி)",
+    "subtitle": "அதிகாரப்பூர்வ நில மற்றும் வரி வருவாய் இயக்குநரகம் • சுதந்திரமான பழைய XML தரவுத்தளம்",
+    "gatewayActive": "XML நுழைவாயில் செயலில்",
+    "idFormat": "வருவாய் ID வடிவம்",
+    "idSubtitle": "சுதந்திர வருவாய் நேம்ஸ்பேஸ்",
+    "protocol": "பதிலளிப்பு நெறிமுறை",
+    "protocolSubtitle": "பழைய தரவு பரிமாற்றம்",
+    "health": "சேவை சுகாதாரம்",
+    "healthSubtitle": "வருவாய் அனுப்பும் இயந்திரம்"
+  },
+  "welfare": {
+    "title": "சமூக நலத்துறை தளம்",
+    "subtitle": "அதிகாரப்பூர்வ பயனாளிகள் நிர்வாகம் & நேரடி பயன் மாற்ற (DBT) தளம்",
+    "addScheme": "புதிய நலத்திட்டத்தை சேர்க்கவும்",
+    "totalApps": "மொத்த விண்ணப்பங்கள்",
+    "totalAppsSub": "திட்டங்களில் பெறப்பட்டவை",
+    "verifiedIncomes": "சரிபார்க்கப்பட்ட வருமானங்கள்",
+    "verifiedIncomesSub": "இடைநிலை XML பார்சர் மூலம் பெறப்பட்டது",
+    "disbursed": "வழங்கப்பட்ட நன்மைகள்",
+    "disbursedSub": "நேரடி பயன் மாற்றம் முடிந்தது"
+  },
+  "admin": {
+    "title": "கணினி நிர்வாகி & இயங்குதன்மை கண்காணிப்பு",
+    "subtitle": "API நுழைவாயில் தாமதம், துறைகளுக்கு இடையிலான தணிக்கை தடங்கள் மற்றும் தகுதி விதிகளின் நிகழ்நேர கண்காணிப்பு.",
+    "tabMetrics": "கணினி அளவீடுகள்",
+    "tabAudits": "தணிக்கை பதிவுகள்",
+    "tabRules": "விதி இயந்திரம்",
+    "metricApps": "மொத்த விண்ணப்பங்கள்",
+    "metricAppsSub": "இடைநிலையால் கையாளப்பட்டது",
+    "metricVerified": "சரிபார்க்கப்பட்ட விண்ணப்பங்கள்",
+    "metricVerifiedSub": "வருவாய் XML சரிபார்க்கப்பட்டது",
+    "metricEligible": "தகுதியான விண்ணப்பங்கள்",
+    "metricEligibleSub": "தகுதி விதிகள் கடந்துவிட்டன",
+    "metricTime": "சராசரி செயலாக்க நேரம்",
+    "metricTimeSub": "முழு API தாமதம்"
+  }
+}

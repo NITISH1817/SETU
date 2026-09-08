@@ -1,0 +1,128 @@
+{
+  "login": {
+    "title": "GovConnect Suite",
+    "subtitle": "Multi-Department Interoperability Gateway • Single Sign-On",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "password": "Password",
+    "createAccount": "Create Citizen Account",
+    "signInPortal": "Sign In to Portal",
+    "alreadyAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "signIn": "Sign In",
+    "registerNow": "Register Now",
+    "demoCreds": "⚡ Demo Hackathon Credentials",
+    "citizen": "Citizen",
+    "welfareOfficer": "Welfare Officer",
+    "admin": "Admin",
+    "authFailed": "Authentication failed"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "applications": "Applications",
+    "consent": "Consent Manager",
+    "language": "Language"
+  },
+  "sidebar": {
+    "citizenPortal": "Citizen Portal",
+    "myDashboard": "My Dashboard",
+    "applyService": "Apply for Service",
+    "consentManager": "Consent Manager",
+    "trackApplications": "Track Applications",
+    "officerPortals": "Officer Portals",
+    "revenueDept": "Revenue Dept",
+    "welfareDept": "Welfare Dept",
+    "interoperability": "Interoperability",
+    "middlewareHub": "Middleware Hub",
+    "consolidatedView": "Consolidated View",
+    "mdmRegistry": "MDM Registry",
+    "monitoring": "Monitoring",
+    "systemMonitor": "System Monitor",
+    "adminPanel": "Admin Panel",
+    "apiDocs": "API Docs",
+    "logout": "Sign Out"
+  },
+  "monitor": {
+    "title": "Interoperability Pipeline Monitor",
+    "subtitle": "Live Hackathon Demonstration: Watch how our middleware bridges the independent Revenue XML system with the Social Welfare eligibility engine without replacing underlying legacy databases.",
+    "runPipeline": "Run Live Interoperability Flow",
+    "executing": "Executing Pipeline...",
+    "success": "Pipeline Execution Completed Successfully",
+    "latency": "Total Latency: {{time}} ms",
+    "inspectPayload": "Inspect Payload",
+    "payloadInspector": "Payload Inspector: {{name}}",
+    "clickToPopulate": "Click 'Run Live Interoperability Flow' above to populate live payloads for this step.",
+    "rawXmlTitle": "Revenue Department Raw Legacy XML Output",
+    "stepOutputTitle": "Step {{id}} Output Payload",
+    "idPrefix": "ID: "
+  },
+  "departments": {
+    "welfare": "Social Welfare",
+    "middleware": "Interoperability Middleware",
+    "revenue": "Revenue Dept (XML)"
+  },
+  "citizens": {
+    "cit1001": "Citizen: Ramesh (CIT-1001 → REV-7845)",
+    "cit1002": "Citizen: Anita (CIT-1002 → REV-9214)",
+    "cit1003": "Citizen: Suresh (CIT-1003 → REV-3312)"
+  },
+  "steps": {
+    "step1": {
+      "name": "1. Welfare Application Init",
+      "description": "Citizen submits scheme application with Welfare ID"
+    },
+    "step2": {
+      "name": "2. JWT & RBAC Auth Check",
+      "description": "Middleware validates JWT bearer token and role permissions"
+    },
+    "step3": {
+      "name": "3. Digital Consent Verification",
+      "description": "Middleware checks active unexpired consent record"
+    },
+    "step4": {
+      "name": "4. Master ID Mapping",
+      "description": "Maps Welfare ID (CIT-1001) to Revenue ID (REV-7845)"
+    },
+    "step5": {
+      "name": "5. Revenue API Execution",
+      "description": "Calls GET /api/revenue/citizen/REV-7845/income"
+    },
+    "step6": {
+      "name": "6. Legacy XML Received",
+      "description": "Revenue system returns raw XML format response"
+    },
+    "step7": {
+      "name": "7. XML → JSON Common Model",
+      "description": "Transforms legacy XML into standardized JSON payload"
+    },
+    "step8": {
+      "name": "8. Data Quality Validation",
+      "description": "Executes 6 schema & non-negative income quality checks"
+    },
+    "step9": {
+      "name": "9. Deterministic Rules Engine",
+      "description": "Evaluates scheme income and age thresholds"
+    },
+    "step10": {
+      "name": "10. Final Result & Audit Log",
+      "description": "Updates status, records immutable audit event, sends notification"
+    }
+  },
+  "topology": {
+    "title": "CROSS-DEPARTMENTAL DATA EXCHANGE NETWORK TOPOLOGY",
+    "welfareTitle": "Social Welfare Dept Portal",
+    "welfareType": "JSON / REST",
+    "welfareDesc": "Submits scheme requests using Welfare IDs (CIT-1001). Evaluates final scheme eligibility.",
+    "middlewareTitle": "GovConnect Middleware",
+    "middlewareType": "Core Gateway",
+    "middlewareDesc": "Handles JWT Auth, Consent Enforcement, ID Resolution (CIT → REV), XML parsing, and Data Quality assertion.",
+    "revenueTitle": "Revenue Dept Legacy API",
+    "revenueType": "XML / REST",
+    "revenueDesc": "Queries land & income records using Revenue IDs (REV-7845). Serializes output in XML."
+  },
+  "hub": {
+    "title": "GovConnect Interoperability Middleware Hub",
+    "subtitle": "Central Government Data Exchange Node • Bridging Disparate Portals, XML Schemas & Identity Records",
+    "engineActive": "Syntactic & Semantic Engine Active"
+  }
+}

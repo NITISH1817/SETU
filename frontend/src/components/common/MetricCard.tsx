@@ -1,5 +1,5 @@
 import React from 'react';
-import { LucideIcon } from 'lucide-react';
+import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react';
 
 interface MetricCardProps {
   title: string;
@@ -7,7 +7,8 @@ interface MetricCardProps {
   subtitle?: string;
   icon: LucideIcon;
   trend?: string;
-  variant?: 'blue' | 'emerald' | 'amber' | 'purple' | 'slate' | 'rose';
+  trendUp?: boolean;
+  variant?: 'blue' | 'emerald' | 'amber' | 'purple' | 'slate' | 'rose' | 'indigo'; // kept for backwards compatibility but unused
 }
 
 export const MetricCard: React.FC<MetricCardProps> = ({
@@ -16,31 +17,37 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   subtitle,
   icon: Icon,
   trend,
-  variant = 'blue'
+  trendUp = true,
+  variant = 'blue',
 }) => {
-  const colorMap = {
-    blue: 'from-blue-900/30 to-slate-900 border-blue-800/40 text-blue-400',
-    emerald: 'from-emerald-900/30 to-slate-900 border-emerald-800/40 text-emerald-400',
-    amber: 'from-amber-900/30 to-slate-900 border-amber-800/40 text-amber-400',
-    purple: 'from-purple-900/30 to-slate-900 border-purple-800/40 text-purple-400',
-    slate: 'from-slate-800/40 to-slate-900 border-slate-700/40 text-slate-300',
-    rose: 'from-rose-900/30 to-slate-900 border-rose-800/40 text-rose-400'
-  };
-
   return (
-    <div className={`p-5 rounded-xl bg-gradient-to-br border ${colorMap[variant]} shadow-lg flex items-center justify-between`}>
-      <div>
-        <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">{title}</p>
-        <h3 className="text-2xl font-extrabold text-white mt-1">{value}</h3>
-        {subtitle && <p className="text-xs text-slate-400 mt-1">{subtitle}</p>}
+    <div
+      className={`gc-accent-card p-5 flex items-center justify-between group transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5`}
+      style={{ borderTop: '2px solid var(--border)' }}
+    >
+      <div className="space-y-1.5 flex-1 min-w-0">
+        <p className="gc-section-label truncate">{title}</p>
+        <h3 className="text-2xl font-bold text-[var(--color-text)] tabular-nums leading-none" style={{ color: 'var(--text)' }}>
+          {value}
+        </h3>
+        {subtitle && (
+          <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>{subtitle}</p>
+        )}
         {trend && (
-          <span className="inline-block text-xs text-emerald-400 font-semibold mt-1">
-            ↑ {trend}
+          <span
+            className={`inline-flex items-center gap-1 text-xs font-semibold`}
+            style={{ color: trendUp ? 'var(--success)' : 'var(--warning)' }}
+          >
+            {trendUp ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+            {trend}
           </span>
         )}
       </div>
-      <div className={`p-3 rounded-lg bg-slate-900/80 border border-white/5`}>
-        <Icon className="w-6 h-6" />
+      <div
+        className={`ml-4 flex-shrink-0 w-12 h-12 rounded-xl border flex items-center justify-center transition-transform duration-200 group-hover:scale-110`}
+        style={{ background: 'var(--surface-3)', borderColor: 'var(--border-2)' }}
+      >
+        <Icon className={`w-6 h-6`} style={{ color: 'var(--text)' }} />
       </div>
     </div>
   );

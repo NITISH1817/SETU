@@ -1,0 +1,180 @@
+{
+  "login": {
+    "title": "GovConnect Suite",
+    "subtitle": "Multi-Department Interoperability Gateway • Single Sign-On",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "password": "Password",
+    "createAccount": "Create Citizen Account",
+    "signInPortal": "Sign In to Portal",
+    "alreadyAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "signIn": "Sign In",
+    "registerNow": "Register Now",
+    "demoCreds": "⚡ Demo Hackathon Credentials",
+    "citizen": "Citizen",
+    "welfareOfficer": "Welfare Officer",
+    "admin": "Admin",
+    "authFailed": "Authentication failed"
+  },
+  "nav": {
+    "dashboard": "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+    "applications": "ಅರ್ಜಿಗಳು",
+    "consent": "ಸಮ್ಮತಿ ನಿರ್ವಾಹಕ",
+    "language": "ಭಾಷೆ"
+  },
+  "sidebar": {
+    "citizenPortal": "ನಾಗರಿಕ ಪೋರ್ಟಲ್",
+    "myDashboard": "ನನ್ನ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+    "applyService": "ಸೇವೆಗಾಗಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ",
+    "consentManager": "ಸಮ್ಮತಿ ನಿರ್ವಾಹಕ",
+    "trackApplications": "ಅರ್ಜಿಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ",
+    "officerPortals": "ಅಧಿಕಾರಿ ಪೋರ್ಟಲ್‌ಗಳು",
+    "revenueDept": "ಕಂದಾಯ ಇಲಾಖೆ",
+    "welfareDept": "ಕಲ್ಯಾಣ ಇಲಾಖೆ",
+    "interoperability": "ಪರಸ್ಪರ ಕಾರ್ಯಸಾಧ್ಯತೆ",
+    "middlewareHub": "ಮಿಡಲ್ವೇರ್ ಹಬ್",
+    "consolidatedView": "ಏಕೀಕೃತ ನೋಟ",
+    "mdmRegistry": "MDM ನೋಂದಣಿ",
+    "monitoring": "ಮೇಲ್ವಿಚಾರಣೆ",
+    "systemMonitor": "ಸಿಸ್ಟಮ್ ಮಾನಿಟರ್",
+    "adminPanel": "ನಿರ್ವಾಹಕ ಫಲಕ",
+    "apiDocs": "API ದಾಖಲೆಗಳು",
+    "logout": "ಲಾಗ್ ಔಟ್"
+  },
+  "monitor": {
+    "title": "Interoperability Pipeline Monitor",
+    "subtitle": "Live Hackathon Demonstration: Watch how our middleware bridges the independent Revenue XML system with the Social Welfare eligibility engine without replacing underlying legacy databases.",
+    "runPipeline": "Run Live Interoperability Flow",
+    "executing": "Executing Pipeline...",
+    "success": "Pipeline Execution Completed Successfully",
+    "latency": "Total Latency: {{time}} ms",
+    "inspectPayload": "Inspect Payload",
+    "payloadInspector": "Payload Inspector: {{name}}",
+    "clickToPopulate": "Click 'Run Live Interoperability Flow' above to populate live payloads for this step.",
+    "rawXmlTitle": "Revenue Department Raw Legacy XML Output",
+    "stepOutputTitle": "Step {{id}} Output Payload",
+    "idPrefix": "ID: "
+  },
+  "departments": {
+    "welfare": "Social Welfare",
+    "middleware": "Interoperability Middleware",
+    "revenue": "ಕಂದಾಯ ಇಲಾಖೆ"
+  },
+  "citizens": {
+    "cit1001": "Citizen: Ramesh (CIT-1001 → REV-7845)",
+    "cit1002": "Citizen: Anita (CIT-1002 → REV-9214)",
+    "cit1003": "Citizen: Suresh (CIT-1003 → REV-3312)"
+  },
+  "steps": {
+    "step1": {
+      "name": "1. Welfare Application Init",
+      "description": "Citizen submits scheme application with Welfare ID"
+    },
+    "step2": {
+      "name": "2. JWT & RBAC Auth Check",
+      "description": "Middleware validates JWT bearer token and role permissions"
+    },
+    "step3": {
+      "name": "3. Digital Consent Verification",
+      "description": "Middleware checks active unexpired consent record"
+    },
+    "step4": {
+      "name": "4. Master ID Mapping",
+      "description": "Maps Welfare ID (CIT-1001) to Revenue ID (REV-7845)"
+    },
+    "step5": {
+      "name": "5. Revenue API Execution",
+      "description": "Calls GET /api/revenue/citizen/REV-7845/income"
+    },
+    "step6": {
+      "name": "6. Legacy XML Received",
+      "description": "Revenue system returns raw XML format response"
+    },
+    "step7": {
+      "name": "7. XML → JSON Common Model",
+      "description": "Transforms legacy XML into standardized JSON payload"
+    },
+    "step8": {
+      "name": "8. Data Quality Validation",
+      "description": "Executes 6 schema & non-negative income quality checks"
+    },
+    "step9": {
+      "name": "9. Deterministic Rules Engine",
+      "description": "Evaluates scheme income and age thresholds"
+    },
+    "step10": {
+      "name": "10. Final Result & Audit Log",
+      "description": "Updates status, records immutable audit event, sends notification"
+    }
+  },
+  "topology": {
+    "title": "ಅಡ್ಡ-ಇಲಾಖಾ ಡೇಟಾ ನೆಟ್‌ವರ್ಕ್",
+    "welfareTitle": "ಕಲ್ಯಾಣ ಪೋರ್ಟಲ್",
+    "welfareType": "JSON / REST",
+    "welfareDesc": "ಅರ್ಜಿಗಳನ್ನು ಸಲ್ಲಿಸುತ್ತದೆ.",
+    "middlewareTitle": "GovConnect ಮಿಡಲ್ವೇರ್",
+    "middlewareType": "ಕೋರ್ ಗೇಟ್‌ವೇ",
+    "middlewareDesc": "ಭದ್ರತೆಯನ್ನು ನಿರ್ವಹಿಸುತ್ತದೆ.",
+    "revenueTitle": "ಕಂದಾಯ API",
+    "revenueType": "XML / REST",
+    "revenueDesc": "ಡೇಟಾವನ್ನು ಒದಗಿಸುತ್ತದೆ."
+  },
+  "hub": {
+    "title": "GovConnect ಮಿಡಲ್ವೇರ್ ಹಬ್",
+    "subtitle": "ಕೇಂದ್ರ ಡೇಟಾ ವಿನಿಮಯ ನೋಡ್",
+    "engineActive": "ಎಂಜಿನ್ ಸಕ್ರಿಯ"
+  },
+  "dashboard": {
+    "header": "ನಾಗರಿಕ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+    "welcome": "ಮತ್ತೆ ಸ್ವಾಗತ",
+    "applyScheme": "ಹೊಸ ಯೋಜನೆಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ",
+    "consentReq": "ಡಿಜಿಟಲ್ ಸಮ್ಮತಿ ಅಗತ್ಯವಿದೆ",
+    "grantConsent": "ಈಗ ಸಮ್ಮತಿ ನೀಡಿ",
+    "submittedApps": "ಸಲ್ಲಿಸಿದ ಅರ್ಜಿಗಳು",
+    "verifiedIncomes": "ಪರಿಶೀಲಿಸಿದ ಆದಾಯಗಳು",
+    "eligibleSchemes": "ಅರ್ಹ ಯೋಜನೆಗಳು",
+    "consentStatus": "ಸಮ್ಮತಿ ಸ್ಥಿತಿ",
+    "availableSchemes": "ಲಭ್ಯವಿರುವ ಸರ್ಕಾರಿ ಕಲ್ಯಾಣ ಯೋಜನೆಗಳು",
+    "apply": "ಅರ್ಜಿ ಸಲ್ಲಿಸಿ",
+    "myApps": "ನನ್ನ ಅರ್ಜಿಗಳು ಮತ್ತು ಸ್ಥಿತಿ ಟ್ರ್ಯಾಕಿಂಗ್",
+    "viewTimeline": "ವಿವರವಾದ ಟ್ರ್ಯಾಕಿಂಗ್ ಟೈಮ್‌ಲೈನ್ ವೀಕ್ಷಿಸಿ"
+  },
+  "revenue": {
+    "title": "ಕಂದಾಯ ಇಲಾಖೆ ಪೋರ್ಟಲ್ (ಹಳೆಯ ವ್ಯವಸ್ಥೆ)",
+    "subtitle": "ಅಧಿಕೃತ ಭೂಮಿ ಮತ್ತು ತೆರಿಗೆ ಕಂದಾಯ ನಿರ್ದೇಶನಾಲಯ • ಸ್ವತಂತ್ರ ಹಳೆಯ XML ಡೇಟಾಬೇಸ್",
+    "gatewayActive": "XML ಗೇಟ್‌ವೇ ಸಕ್ರಿಯ",
+    "idFormat": "ಕಂದಾಯ ಐಡಿ ಸ್ವರೂಪ",
+    "idSubtitle": "ಸ್ವತಂತ್ರ ಕಂದಾಯ ನೇಮ್‌ಸ್ಪೇಸ್",
+    "protocol": "ಪ್ರತಿಕ್ರಿಯೆ ಪ್ರೋಟೋಕಾಲ್",
+    "protocolSubtitle": "ಹಳೆಯ ಡೇಟಾ ವಿನಿಮಯ",
+    "health": "ಸೇವಾ ಆರೋಗ್ಯ",
+    "healthSubtitle": "ಕಂದಾಯ ರವಾನೆ ಎಂಜಿನ್"
+  },
+  "welfare": {
+    "title": "ಸಮಾಜ ಕಲ್ಯಾಣ ಇಲಾಖೆ ಪೋರ್ಟಲ್",
+    "subtitle": "ಅಧಿಕೃತ ಫಲಾನುಭವಿ ಆಡಳಿತ ಮತ್ತು ನೇರ ಲಾಭ ವರ್ಗಾವಣೆ (DBT) ಪೋರ್ಟಲ್",
+    "addScheme": "ಹೊಸ ಕಲ್ಯಾಣ ಯೋಜನೆ ಸೇರಿಸಿ",
+    "totalApps": "ಒಟ್ಟು ಅರ್ಜಿಗಳು",
+    "totalAppsSub": "ಯೋಜನೆಗಳಲ್ಲಿ ಸ್ವೀಕರಿಸಲಾಗಿದೆ",
+    "verifiedIncomes": "ಪರಿಶೀಲಿಸಿದ ಆದಾಯಗಳು",
+    "verifiedIncomesSub": "ಮಿಡಲ್ವೇರ್ XML ಪಾರ್ಸರ್ ಮೂಲಕ",
+    "disbursed": "ವಿತರಿಸಿದ ಲಾಭಗಳು",
+    "disbursedSub": "ನೇರ ಲಾಭ ವರ್ಗಾವಣೆ ಪೂರ್ಣಗೊಂಡಿದೆ"
+  },
+  "admin": {
+    "title": "ಸಿಸ್ಟಮ್ ಅಡ್ಮಿನ್ ಮತ್ತು ಇಂಟರ್‌ಆಪರೇಬಿಲಿಟಿ ಮಾನಿಟರಿಂಗ್",
+    "subtitle": "API ಗೇಟ್‌ವೇ ಲೇಟೆನ್ಸಿ ಮತ್ತು ಆಡಿಟ್ ಲಾಗ್‌ಗಳ ನೈಜ-ಸಮಯದ ಮೇಲ್ವಿಚಾರಣೆ.",
+    "tabMetrics": "ಸಿಸ್ಟಮ್ ಮೆಟ್ರಿಕ್ಸ್",
+    "tabAudits": "ಆಡಿಟ್ ಲಾಗ್‌ಗಳು",
+    "tabRules": "ನಿಯಮಗಳ ಎಂಜಿನ್",
+    "metricApps": "ಒಟ್ಟು ಅರ್ಜಿಗಳು",
+    "metricAppsSub": "ಮಿಡಲ್ವೇರ್ ಮೂಲಕ ಸಂಸ್ಕರಿಸಲಾಗಿದೆ",
+    "metricVerified": "ಪರಿಶೀಲಿಸಿದ ಅರ್ಜಿಗಳು",
+    "metricVerifiedSub": "ಕಂದಾಯ XML ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
+    "metricEligible": "ಅರ್ಹ ಅರ್ಜಿಗಳು",
+    "metricEligibleSub": "ನಿಯಮಗಳು ಪಾಸ್ ಆಗಿವೆ",
+    "metricTime": "ಸರಾಸರಿ ಸಮಯ",
+    "metricTimeSub": "API ಲೇಟೆನ್ಸಿ"
+  }
+}

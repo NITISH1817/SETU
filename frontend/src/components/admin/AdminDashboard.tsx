@@ -3,31 +3,27 @@ import api from '../../services/api';
 import { AuditLogItem } from '../../types';
 import { MetricCard } from '../common/MetricCard';
 import { StatusBadge } from '../common/StatusBadge';
+import { EmptyState } from '../common/EmptyState';
+import { PageSkeleton } from '../common/LoadingSkeleton';
 import {
-  Settings,
-  Activity,
-  CheckCircle2,
-  AlertTriangle,
-  Server,
-  FileText,
-  Clock,
-  Search,
-  Shield,
-  Layers,
-  Plus
+  Settings, Activity, CheckCircle2, Server,
+  FileText, Clock, Search, Shield, Plus, AlertTriangle
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+
+// ── All API calls, state management, and business logic are PRESERVED ────────
 
 export const AdminDashboard: React.FC = () => {
+  const { t } = useTranslation();
   const [metrics, setMetrics] = useState<any>(null);
   const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>([]);
   const [rules, setRules] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'metrics' | 'audits' | 'rules'>('metrics');
-
   const [searchAction, setSearchAction] = useState('');
   const [searchStatus, setSearchStatus] = useState('');
 
-  // New Rule form state
+  // New Rule form state — PRESERVED
   const [newRule, setNewRule] = useState({
     schemeId: 'SCH-SCHOLARSHIP-01',
     ruleName: 'Scholarship Cap Rule',
@@ -55,18 +51,17 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useEffect(() => { fetchData(); }, []);
 
+  // PRESERVED — form submit
   const handleCreateRule = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await api.post('/admin/rules', newRule);
-      alert('Eligibility rule created successfully!');
+      alert(t('admin.ruleCreated', 'Eligibility rule created successfully!'));
       fetchData();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to create rule');
+      alert(err.response?.data?.message || t('admin.ruleCreateFailed', 'Failed to create rule'));
     }
   };
 
@@ -76,276 +71,266 @@ export const AdminDashboard: React.FC = () => {
     return matchAction && matchStatus;
   });
 
+  if (loading) return <PageSkeleton />;
+
+  const tabs: { id: typeof activeTab; label: string }[] = [
+    { id: 'metrics', label: t('admin.tabMetrics', 'System Metrics') },
+    { id: 'audits',  label: t('admin.tabAudits', 'Audit Logs') },
+    { id: 'rules',   label: t('admin.tabRules', 'Rules Engine') },
+  ];
+
+  const serviceHealth = [
+    { label: t('admin.healthRev', 'Revenue Dept Legacy XML'), status: 'ONLINE (200 OK)' },
+    { label: t('admin.healthWelfare', 'Social Welfare API Gateway'), status: 'ONLINE (200 OK)' },
+    { label: t('admin.healthMiddleware', 'Middleware Consent Engine'), status: 'ENFORCING JWT/RBAC' },
+  ];
+
+  const auditTableCols = [t('table.action','Action'), t('table.actor','Actor'), t('table.citizenId','Citizen ID'), t('table.revenueId','Revenue ID'), t('table.status','Status'), t('table.timestamp','Timestamp')];
+
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="p-6 rounded-2xl gov-gradient-header border border-blue-900/60 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <div className="flex items-center space-x-2">
-            <Settings className="w-5 h-5 text-blue-400" />
-            <h2 className="text-xl font-extrabold text-white">System Admin & Interoperability Monitoring</h2>
+    <div className="space-y-6 max-w-screen-xl mx-auto">
+
+      {/* ── Page Header ── */}
+      <div className="gc-glass rounded-2xl overflow-hidden">
+        <div className="h-1 w-full" style={{ background: 'var(--gradient-primary)' }} />
+        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center gc-surface-2" style={{ borderColor: 'var(--border-2)' }}>
+              <Settings className="w-5 h-5" style={{ color: 'var(--text)' }} />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold" style={{ color: 'var(--text)' }}>
+                {t('admin.title', 'System Admin & Interoperability Monitoring')}
+              </h2>
+              <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                {t('admin.subtitle', 'API gateway, audit trails, and eligibility rule configurations.')}
+              </p>
+            </div>
           </div>
-          <p className="text-xs text-slate-300 mt-1">
-            Real-time monitoring of API gateway latency, cross-department audit trails, and eligibility rule configurations.
-          </p>
-        </div>
 
-        {/* Navigation Tabs */}
-        <div className="flex items-center space-x-2 bg-slate-900/80 p-1.5 rounded-xl border border-slate-800 text-xs">
-          <button
-            onClick={() => setActiveTab('metrics')}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-              activeTab === 'metrics' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            System Metrics
-          </button>
-          <button
-            onClick={() => setActiveTab('audits')}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-              activeTab === 'audits' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            Audit Logs
-          </button>
-          <button
-            onClick={() => setActiveTab('rules')}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-              activeTab === 'rules' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            Rules Engine
-          </button>
+          {/* Tab Switcher */}
+          <div className="flex items-center p-1 rounded-xl border gap-0.5"
+            style={{ background: 'var(--surface-2)', borderColor: 'var(--border)' }}>
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  activeTab === tab.id
+                    ? 'shadow-sm'
+                    : 'hover:bg-[var(--surface-3)]'
+                }`}
+                style={activeTab === tab.id ? { background: 'var(--gradient-primary)', color: 'var(--surface)' } : { color: 'var(--text-muted)' }}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Overview Metrics Cards */}
+      {/* ── Metric Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <MetricCard
-          title="Total Applications"
-          value={metrics?.totalApplications || 0}
-          subtitle="Processed by Middleware"
-          icon={FileText}
-          variant="blue"
-        />
-        <MetricCard
-          title="Verified Applications"
-          value={metrics?.verifiedApplications || 0}
-          subtitle="Revenue XML parsed & validated"
-          icon={CheckCircle2}
-          variant="emerald"
-        />
-        <MetricCard
-          title="Eligible Applications"
-          value={metrics?.eligibleApplications || 0}
-          subtitle="Deterministic rules passed"
-          icon={Activity}
-          variant="purple"
-        />
-        <MetricCard
-          title="Avg Processing Time"
-          value={`${metrics?.avgProcessingTimeSeconds || 1.42}s`}
-          subtitle="End-to-end API pipeline latency"
-          icon={Clock}
-          variant="amber"
-        />
+        <MetricCard title={t('admin.metricApps', 'Total Applications')} value={metrics?.totalApplications || 0}
+          subtitle={t('admin.subApps', 'Processed by Middleware')} icon={FileText} />
+        <MetricCard title={t('admin.metricVerified', 'Verified')} value={metrics?.verifiedApplications || 0}
+          subtitle={t('admin.subVerified', 'Revenue XML parsed')} icon={CheckCircle2} />
+        <MetricCard title={t('admin.metricEligible', 'Eligible')} value={metrics?.eligibleApplications || 0}
+          subtitle={t('admin.subEligible', 'Rules engine passed')} icon={Activity} />
+        <MetricCard title={t('admin.metricTime', 'Avg Latency')}
+          value={`${metrics?.avgProcessingTimeSeconds || '1.4'}s`}
+          subtitle={t('admin.subTime', 'End-to-end pipeline')} icon={Clock} />
       </div>
 
-      {/* API Health Services Bar */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/60 text-emerald-300 flex items-center justify-between text-xs font-semibold">
-          <span className="flex items-center"><Server className="w-4 h-4 mr-2" /> Revenue Dept Legacy XML Service</span>
-          <span className="font-mono text-emerald-400">ONLINE (200 OK)</span>
-        </div>
-        <div className="p-4 rounded-xl bg-blue-950/40 border border-blue-800/60 text-blue-300 flex items-center justify-between text-xs font-semibold">
-          <span className="flex items-center"><Server className="w-4 h-4 mr-2" /> Social Welfare API Gateway</span>
-          <span className="font-mono text-blue-400">ONLINE (200 OK)</span>
-        </div>
-        <div className="p-4 rounded-xl bg-purple-950/40 border border-purple-800/60 text-purple-300 flex items-center justify-between text-xs font-semibold">
-          <span className="flex items-center"><Shield className="w-4 h-4 mr-2" /> Middleware Consent Engine</span>
-          <span className="font-mono text-purple-400">ENFORCING JWT/RBAC</span>
-        </div>
+      {/* ── Service Health Bar ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {serviceHealth.map(({ label, status }) => (
+          <div key={label} className="p-3.5 rounded-xl border gc-surface flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Server className="w-4 h-4" style={{ color: 'var(--text)' }} />
+              <span className="text-xs font-medium" style={{ color: 'var(--text)' }}>{label}</span>
+            </div>
+            <span className="text-[10px] font-bold font-mono" style={{ color: 'var(--success)' }}>{status}</span>
+          </div>
+        ))}
       </div>
 
-      {/* Tab 1: System Metrics & Recent Audits */}
+      {/* ── Tab: Metrics ── */}
       {activeTab === 'metrics' && (
-        <div className="glass-panel p-5 rounded-2xl border border-slate-800 space-y-4">
-          <h3 className="text-sm font-extrabold text-white">Recent System Audit Events</h3>
+        <div className="gc-surface rounded-2xl overflow-hidden">
+          <div className="px-5 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
+            <h3 className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{t('admin.recentEvents', 'Recent System Audit Events')}</h3>
+          </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900 text-slate-400 uppercase font-semibold border-b border-slate-800">
+            <table className="gc-table">
+              <thead>
                 <tr>
-                  <th className="p-3">Action</th>
-                  <th className="p-3">User / Actor</th>
-                  <th className="p-3">Welfare ID</th>
-                  <th className="p-3">Revenue ID</th>
-                  <th className="p-3">Status</th>
-                  <th className="p-3">Timestamp</th>
+                  {auditTableCols.map(col => (
+                    <th key={col}>{col}</th>
+                  ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800 text-slate-300">
-                {auditLogs.slice(0, 8).map((log) => (
-                  <tr key={log._id} className="hover:bg-slate-900/40 font-mono">
-                    <td className="p-3 font-bold text-blue-400">{log.action}</td>
-                    <td className="p-3 text-slate-300 font-sans">{log.userEmail || 'System Middleware'}</td>
-                    <td className="p-3 text-slate-400">{log.citizenId || '-'}</td>
-                    <td className="p-3 text-amber-400">{log.revenueId || '-'}</td>
-                    <td className="p-3"><StatusBadge status={log.status} size="sm" /></td>
-                    <td className="p-3 text-slate-500">{new Date(log.timestamp).toLocaleTimeString()}</td>
+              <tbody>
+                {auditLogs.slice(0, 8).map(log => (
+                  <tr key={log._id}>
+                    <td className="font-mono font-semibold" style={{ color: 'var(--text)' }}>{log.action}</td>
+                    <td style={{ color: 'var(--text)' }}>{log.userEmail || 'System Middleware'}</td>
+                    <td style={{ color: 'var(--text-muted)' }}>{log.citizenId || '—'}</td>
+                    <td className="font-mono" style={{ color: 'var(--text)' }}>{log.revenueId || '—'}</td>
+                    <td><StatusBadge status={log.status} size="sm" /></td>
+                    <td className="font-mono text-[10px]" style={{ color: 'var(--text-dim)' }}>{new Date(log.timestamp).toLocaleTimeString()}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            {auditLogs.length === 0 && (
+              <EmptyState icon={Activity} title={t('admin.noEvents', 'No audit events')} description={t('admin.noEventsDesc', 'No system activity recorded yet.')} />
+            )}
           </div>
         </div>
       )}
 
-      {/* Tab 2: Full Searchable Audit Logs */}
+      {/* ── Tab: Audits ── */}
       {activeTab === 'audits' && (
-        <div className="glass-panel p-5 rounded-2xl border border-slate-800 space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-            <h3 className="text-sm font-extrabold text-white">Full Security & Interoperability Audit Trails</h3>
-            <div className="flex items-center space-x-2">
-              <input
-                type="text"
-                placeholder="Search action..."
-                value={searchAction}
-                onChange={(e) => setSearchAction(e.target.value)}
-                className="bg-slate-900 border border-slate-700 text-xs rounded-lg px-3 py-1.5 text-white focus:outline-none"
-              />
+        <div className="gc-surface rounded-2xl overflow-hidden">
+          <div className="px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3" style={{ borderBottom: '1px solid var(--border)' }}>
+            <h3 className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{t('admin.fullTrail', 'Full Audit Trail')}</h3>
+            <div className="flex items-center gap-2">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
+                <input
+                  type="text"
+                  placeholder={t('admin.searchAction', 'Search action...')}
+                  value={searchAction}
+                  onChange={e => setSearchAction(e.target.value)}
+                  className="gc-input pl-8 py-1.5 text-xs w-44"
+                />
+              </div>
               <select
                 value={searchStatus}
-                onChange={(e) => setSearchStatus(e.target.value)}
-                className="bg-slate-900 border border-slate-700 text-xs rounded-lg px-3 py-1.5 text-white focus:outline-none"
+                onChange={e => setSearchStatus(e.target.value)}
+                className="gc-input py-1.5 text-xs"
+                style={{ width: 'auto' }}
               >
-                <option value="">All Statuses</option>
+                <option value="">{t('admin.allStatuses', 'All Statuses')}</option>
                 <option value="SUCCESS">SUCCESS</option>
                 <option value="FAILED">FAILED</option>
                 <option value="WARNING">WARNING</option>
               </select>
             </div>
           </div>
-
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-slate-900 text-slate-400 uppercase font-semibold border-b border-slate-800">
+            <table className="gc-table">
+              <thead>
                 <tr>
-                  <th className="p-3">Action</th>
-                  <th className="p-3">Actor</th>
-                  <th className="p-3">Citizen ID</th>
-                  <th className="p-3">Revenue ID</th>
-                  <th className="p-3">Status</th>
-                  <th className="p-3">Timestamp</th>
+                  {auditTableCols.map(col => (
+                    <th key={col}>{col}</th>
+                  ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800 text-slate-300">
-                {filteredLogs.map((log) => (
-                  <tr key={log._id} className="hover:bg-slate-900/50">
-                    <td className="p-3 font-bold text-blue-400">{log.action}</td>
-                    <td className="p-3 font-sans text-slate-200">{log.userEmail || 'Middleware'}</td>
-                    <td className="p-3 text-slate-400">{log.citizenId || '-'}</td>
-                    <td className="p-3 text-amber-400">{log.revenueId || '-'}</td>
-                    <td className="p-3"><StatusBadge status={log.status} size="sm" /></td>
-                    <td className="p-3 text-slate-500">{new Date(log.timestamp).toLocaleString()}</td>
+              <tbody>
+                {filteredLogs.map(log => (
+                  <tr key={log._id}>
+                    <td className="font-mono font-semibold" style={{ color: 'var(--text)' }}>{log.action}</td>
+                    <td style={{ color: 'var(--text)' }}>{log.userEmail || 'Middleware'}</td>
+                    <td style={{ color: 'var(--text-muted)' }}>{log.citizenId || '—'}</td>
+                    <td className="font-mono" style={{ color: 'var(--text)' }}>{log.revenueId || '—'}</td>
+                    <td><StatusBadge status={log.status} size="sm" /></td>
+                    <td className="font-mono text-[10px]" style={{ color: 'var(--text-dim)' }}>{new Date(log.timestamp).toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            {filteredLogs.length === 0 && (
+              <EmptyState icon={Search} title={t('admin.noMatch', 'No matching logs')} description={t('admin.adjustFilters', 'Adjust your search filters.')} />
+            )}
           </div>
         </div>
       )}
 
-      {/* Tab 3: Configurable Eligibility Rules Manager */}
+      {/* ── Tab: Rules ── */}
       {activeTab === 'rules' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="glass-panel p-5 rounded-2xl border border-slate-800 space-y-4">
-            <h3 className="text-sm font-extrabold text-white flex items-center">
-              <Plus className="w-4 h-4 mr-1 text-blue-400" /> Create Eligibility Rule
-            </h3>
-
-            <form onSubmit={handleCreateRule} className="space-y-3 text-xs">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          {/* Create Rule Form — logic PRESERVED */}
+          <div className="gc-surface rounded-2xl overflow-hidden">
+            <div className="px-5 py-4 flex items-center gap-2" style={{ borderBottom: '1px solid var(--border)' }}>
+              <Plus className="w-4 h-4" style={{ color: 'var(--text)' }} />
+              <h3 className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{t('admin.createRule', 'Create Eligibility Rule')}</h3>
+            </div>
+            <form onSubmit={handleCreateRule} className="p-5 space-y-4">
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Scheme</label>
-                <select
-                  value={newRule.schemeId}
-                  onChange={(e) => setNewRule({ ...newRule, schemeId: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white font-semibold"
-                >
+                <label className="gc-label">{t('admin.scheme', 'Scheme')}</label>
+                <select value={newRule.schemeId}
+                  onChange={e => setNewRule({ ...newRule, schemeId: e.target.value })}
+                  className="gc-input text-sm">
                   <option value="SCH-SCHOLARSHIP-01">Post-Matric Scholarship</option>
                   <option value="SCH-PENSION-01">Indira Gandhi Old Age Pension</option>
                 </select>
               </div>
-
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Rule Name</label>
-                <input
-                  type="text"
-                  value={newRule.ruleName}
-                  onChange={(e) => setNewRule({ ...newRule, ruleName: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white"
-                />
+                <label className="gc-label">{t('admin.ruleName', 'Rule Name')}</label>
+                <input type="text" value={newRule.ruleName}
+                  onChange={e => setNewRule({ ...newRule, ruleName: e.target.value })}
+                  className="gc-input text-sm" />
               </div>
-
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Field</label>
-                  <select
-                    value={newRule.field}
-                    onChange={(e) => setNewRule({ ...newRule, field: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white"
-                  >
+                  <label className="gc-label">{t('admin.field', 'Field')}</label>
+                  <select value={newRule.field}
+                    onChange={e => setNewRule({ ...newRule, field: e.target.value })}
+                    className="gc-input text-sm">
                     <option value="annualIncome">annualIncome</option>
                     <option value="age">age</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Operator</label>
-                  <select
-                    value={newRule.operator}
-                    onChange={(e) => setNewRule({ ...newRule, operator: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white"
-                  >
-                    <option value="<=">&lt;=</option>
-                    <option value=">=">&gt;=</option>
-                    <option value="==">==</option>
+                  <label className="gc-label">{t('admin.operator', 'Operator')}</label>
+                  <select value={newRule.operator}
+                    onChange={e => setNewRule({ ...newRule, operator: e.target.value })}
+                    className="gc-input text-sm">
+                    <option value="<=">{'<='}</option>
+                    <option value=">=">{'>='}</option>
+                    <option value="==">{'=='}</option>
                   </select>
                 </div>
               </div>
-
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Target Threshold Value</label>
-                <input
-                  type="number"
-                  value={newRule.targetValue}
-                  onChange={(e) => setNewRule({ ...newRule, targetValue: Number(e.target.value) })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white font-mono"
-                />
+                <label className="gc-label">{t('admin.thresholdValue', 'Threshold Value')}</label>
+                <input type="number" value={newRule.targetValue}
+                  onChange={e => setNewRule({ ...newRule, targetValue: Number(e.target.value) })}
+                  className="gc-input font-mono text-sm" />
               </div>
-
-              <button
-                type="submit"
-                className="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow"
-              >
-                Add Rule to Engine
+              <button type="submit" className="gc-btn-primary w-full justify-center text-sm">
+                <Plus className="w-4 h-4" />
+                {t('admin.addRuleBtn', 'Add Rule to Engine')}
               </button>
             </form>
           </div>
 
-          <div className="lg:col-span-2 glass-panel p-5 rounded-2xl border border-slate-800 space-y-4">
-            <h3 className="text-sm font-extrabold text-white">Active Deterministic Rules Engine Configurations</h3>
-            <div className="space-y-3">
-              {rules.map((rule) => (
-                <div key={rule._id} className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center text-xs">
-                  <div>
-                    <span className="font-mono text-blue-400 font-bold">{rule.schemeId}</span>
-                    <h4 className="font-bold text-white mt-0.5">{rule.ruleName}</h4>
-                    <p className="text-slate-400 mt-1">{rule.description}</p>
+          {/* Active Rules — logic PRESERVED */}
+          <div className="lg:col-span-2 gc-surface rounded-2xl overflow-hidden">
+            <div className="px-5 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
+              <h3 className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{t('admin.activeRules', 'Active Rules Engine Configurations')}</h3>
+            </div>
+            <div className="p-5 space-y-3">
+              {rules.length === 0 ? (
+                <EmptyState icon={AlertTriangle} title={t('admin.noRules', 'No rules configured')} description={t('admin.noRulesDesc', 'Create a rule using the form on the left.')} />
+              ) : (
+                rules.map(rule => (
+                  <div key={rule._id}
+                    className="p-4 rounded-xl border flex items-center justify-between gap-4 gc-surface-2"
+                    style={{ borderColor: 'var(--border)' }}>
+                    <div className="min-w-0 flex-1">
+                      <span className="text-[10px] font-mono font-semibold" style={{ color: 'var(--text-muted)' }}>{rule.schemeId}</span>
+                      <h4 className="text-sm font-semibold mt-0.5" style={{ color: 'var(--text)' }}>{rule.ruleName}</h4>
+                      <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{rule.description}</p>
+                    </div>
+                    <div className="shrink-0 px-3 py-1.5 rounded-lg font-mono text-xs font-bold gc-badge gc-badge-info">
+                      {rule.field} {rule.operator} {rule.targetValue?.toLocaleString()}
+                    </div>
                   </div>
-                  <div className="text-right font-mono bg-slate-950 px-3 py-1.5 rounded border border-slate-800 text-emerald-400 font-bold">
-                    {rule.field} {rule.operator} {rule.targetValue}
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>
