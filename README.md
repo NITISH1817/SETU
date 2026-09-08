@@ -1,4 +1,4 @@
-# GovConnect – Government Interoperability Framework & Middleware
+# SETU (GovConnect) – Government Interoperability Framework & Middleware
 
 GovConnect is a comprehensive government interoperability framework, middleware layer, and federated service delivery architecture designed to enable secure, standards-based information exchange across independent government portals without replacing existing legacy databases.
 
